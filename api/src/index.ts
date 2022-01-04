@@ -1,12 +1,15 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
 import express from 'express';
+import { createConnection } from 'typeorm';
+import { errorMiddleware } from 'utils/ErrorHandler';
 
 createConnection();
 
 const server = express();
 
 server.use(express.json);
+
+server.use(errorMiddleware);
 
 server.listen(3080, () => {
   // eslint-disable-next-line no-console
