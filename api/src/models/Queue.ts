@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  Generated,
   OneToMany,
   ManyToOne,
   JoinColumn,
@@ -23,8 +22,7 @@ export default class Queue {
   @Column()
   waitingTimeMinutes: number;
 
-  @Column()
-  @Generated('increment')
+  @Column({ generated: 'increment' })
   currentCode: string;
 
   @Column()
@@ -39,7 +37,7 @@ export default class Queue {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => QueueClients, queueClients => queueClients)
+  @OneToMany(() => QueueClients, queueClients => queueClients.queue)
   clients: QueueClients[];
 
   @ManyToOne(() => Tag, tag => tag.queues)
