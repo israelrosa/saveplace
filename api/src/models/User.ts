@@ -4,7 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
+import bcrypt from 'bcrypt';
+import QueueClients from './QueueClients';
 
 // eslint-disable-next-line no-shadow
 enum UserType {
@@ -20,10 +25,13 @@ export default class User {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  profileImage: string;
+
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
   @Column({ unique: true })
@@ -55,4 +63,13 @@ export default class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => QueueClients, queueClients => queueClients.user)
+  queues: QueueClients[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 8);
+  }
 }

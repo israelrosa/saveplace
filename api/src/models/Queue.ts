@@ -22,7 +22,7 @@ export default class Queue {
   @Column()
   waitingTimeMinutes: number;
 
-  @Column({ generated: 'increment' })
+  @Column()
   currentCode: string;
 
   @Column()
@@ -37,7 +37,9 @@ export default class Queue {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => QueueClients, queueClients => queueClients.queue)
+  @OneToMany(() => QueueClients, queueClients => queueClients.queue, {
+    onDelete: 'SET NULL',
+  })
   clients: QueueClients[];
 
   @ManyToOne(() => Tag, tag => tag.queues)

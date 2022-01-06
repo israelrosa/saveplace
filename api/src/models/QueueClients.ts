@@ -7,6 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import Queue from './Queue';
+import User from './User';
 
 @Entity('queueClients')
 export default class QueueClients {
@@ -23,6 +24,9 @@ export default class QueueClients {
   queueId: string;
 
   @Column()
+  userId: string;
+
+  @Column()
   attendedOn: Date;
 
   @CreateDateColumn()
@@ -31,4 +35,8 @@ export default class QueueClients {
   @ManyToOne(() => Queue, queue => queue.clients)
   @JoinColumn({ name: 'queueId' })
   queue: Queue;
+
+  @ManyToOne(() => User, user => user.queues)
+  @JoinColumn({ name: 'userId' })
+  user: User;
 }

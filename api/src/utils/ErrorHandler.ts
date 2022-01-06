@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
+interface ErrorParams {
+  id: string;
+  message: string;
+  statusCode: number;
+}
 export default class ErrorHandler {
   public readonly id: string;
 
@@ -7,7 +12,7 @@ export default class ErrorHandler {
 
   public readonly statusCode: number;
 
-  constructor(id: string, message: string, statusCode = 400) {
+  constructor({ id, message, statusCode = 400 }: ErrorParams) {
     this.id = id;
     this.message = message;
     this.statusCode = statusCode;
