@@ -11,9 +11,10 @@ import {
 import bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import QueueClients from './QueueClients';
+import Queue from './Queue';
 
 // eslint-disable-next-line no-shadow
-enum UserType {
+export enum UserType {
   CLIENT = 'client',
   ESTABLISHMENT = 'establishment',
 }
@@ -67,7 +68,10 @@ export default class User {
   updatedAt: Date;
 
   @OneToMany(() => QueueClients, queueClients => queueClients.user)
-  queues: QueueClients[];
+  queuesClients: QueueClients[];
+
+  @OneToMany(() => Queue, queue => queue.user)
+  queues: Queue[];
 
   @BeforeInsert()
   @BeforeUpdate()

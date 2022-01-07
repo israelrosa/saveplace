@@ -9,6 +9,11 @@ export default {
     message: 'Invalid token',
     statusCode: 401,
   },
+  INVALID_RESOURCE: {
+    id: 'invalid_resource',
+    message: 'Invalid resource',
+    statusCode: 422,
+  },
   INVALID_PASSWORD: {
     id: 'invalid_password',
     message: 'Invalid password',
@@ -28,5 +33,10 @@ export default {
     id: 'invalid_user',
     message: 'User not found',
     statusCode: 422,
+  },
+  USER_DOES_NOT_HAVE_PERMISSION: {
+    id: 'user_does_not_have_permission',
+    message: 'User does not have permission',
+    statusCode: 401,
   },
 };

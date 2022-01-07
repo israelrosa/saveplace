@@ -8,7 +8,7 @@ const userController = new UserController();
 userRouter
   .route('/')
   .post(userController.register)
-  .get(ensureAuthentication, userController.get)
-  .put(ensureAuthentication, userController.update);
+  .get(ensureAuthentication(), userController.get)
+  .put(ensureAuthentication(), userController.update);
 
 export default userRouter;

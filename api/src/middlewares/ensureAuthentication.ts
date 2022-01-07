@@ -11,32 +11,34 @@ interface ITokenPayload {
   sub: string;
 }
 
-function ensureAuthentication(
-  request: Request,
-  response: Response,
-  next: NextFunction,
-): void {
-  const authHeader = request.headers.authorization;
+const ensureAuthentication =
+  (type?: string) =>
+  (request: Request, response: Response, next: NextFunction): void => {
+    const authHeader = request.headers.authorization;
 
-  if (!authHeader) {
-    throw new ErrorHandler(ERROR.TOKEN_NOT_FOUND);
-  }
+    if (!authHeader) {
+      throw new ErrorHandler(ERROR.TOKEN_NOT_FOUND);
+    }
 
-  const [, token] = authHeader.split(' ');
+    const [, token] = authHeader.split(' ');
 
-  try {
-    const decoded = verify(token, authConfig.secret);
-    const { sub, userType } = decoded as ITokenPayload;
+    try {
+      const decoded = verify(token, authConfig.secret);
+      const { sub, userType } = decoded as ITokenPayload;
 
-    request.user = {
-      id: sub,
-      type: userType,
-    };
+      if (type && userType !== type) {
+        throw new ErrorHandler(ERROR.INVALID_USER_TYPE);
+      }
 
-    return next();
-  } catch (err) {
-    throw new ErrorHandler(ERROR.INVALID_TOKEN);
-  }
-}
+      request.user = {
+        id: sub,
+        type: userType,
+      };
+
+      return next();
+    } catch (err) {
+      throw new ErrorHandler(ERROR.INVALID_TOKEN);
+    }
+  };
 
 export default ensureAuthentication;
