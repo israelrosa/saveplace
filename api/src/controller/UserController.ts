@@ -1,8 +1,11 @@
+import { instanceToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
 import CreateRefreshToken from 'services/refreshToken/CreateRefreshToken';
 import AuthenticateUserService from 'services/user/AuthenticateUserService';
 import AuthenticateWithRefreshTokenService from 'services/user/AuthenticationWithRefreshTokenService';
 import RegisterUserService from 'services/user/RegisterUserService';
+import ShowUserInfoService from 'services/user/ShowUserInfoService';
+import UpdateUserService from 'services/user/UpdateUserService';
 
 export default class UserController {
   async register(request: Request, response: Response): Promise<Response> {
@@ -66,5 +69,45 @@ export default class UserController {
     return response
       .status(200)
       .json({ ...session, refreshToken: refreshTokenResponse });
+  }
+
+  async get(request: Request, response: Response): Promise<Response> {
+    const { id } = request.user;
+
+    const showUserInfoService = new ShowUserInfoService();
+
+    const user = await showUserInfoService.exec(id);
+
+    return response.status(200).json(instanceToPlain(user));
+  }
+
+  async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.user;
+    const {
+      name,
+      zipCode,
+      state,
+      street,
+      neighborhood,
+      city,
+      establishmentNumber,
+      profileImage,
+    } = request.body;
+
+    const updateUserService = new UpdateUserService();
+
+    const user = await updateUserService.exec({
+      id,
+      city,
+      establishmentNumber,
+      profileImage,
+      name,
+      neighborhood,
+      state,
+      street,
+      zipCode,
+    });
+
+    return response.status(200).json(instanceToPlain(user));
   }
 }

@@ -45,6 +45,7 @@ export default class AuthenticateUserService {
 
     const session = CreateSessionToken(
       user.id,
+      user.type,
       authConfig.accessTokenExpiresIn,
     );
 

@@ -1,6 +1,7 @@
 import { EntityManager, getManager } from 'typeorm';
 import ErrorHandler from 'utils/ErrorHandler';
 import RefreshToken from 'models/RefreshToken';
+import User from 'models/User';
 import ERROR from '../../utils';
 import authConfig from '../../configs/auth';
 import CreateSessionToken from './CreateSessionToken';
@@ -27,11 +28,18 @@ export default class AuthenticateWithRefreshTokenService {
     });
 
     if (!refreshToken) {
+      throw new ErrorHandler(ERROR.INVALID_TOKEN);
+    }
+
+    const user = await this.entityManager.findOne(User, refreshToken.userId);
+
+    if (!user) {
       throw new ErrorHandler(ERROR.USER_NOT_FOUND);
     }
 
     const session = CreateSessionToken(
-      refreshToken.userId,
+      user.id,
+      user.type,
       authConfig.accessTokenExpiresIn,
     );
 

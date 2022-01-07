@@ -3,9 +3,10 @@ import authConfig from '../../configs/auth';
 
 export default function CreateSessionToken(
   userId: string,
+  userType: string,
   expiresTime: string,
 ) {
-  const token = sign({}, authConfig.secret, {
+  const token = sign({ userType }, authConfig.secret, {
     subject: userId,
     expiresIn: `${expiresTime}s`,
   });

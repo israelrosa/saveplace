@@ -9,6 +9,7 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 import QueueClients from './QueueClients';
 
 // eslint-disable-next-line no-shadow
@@ -29,6 +30,7 @@ export default class User {
   profileImage: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column({ nullable: true })
