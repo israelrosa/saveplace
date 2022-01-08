@@ -1,7 +1,7 @@
 import { EntityManager, getManager } from 'typeorm';
 import Queue from 'models/Queue';
 import ErrorHandler from 'utils/ErrorHandler';
-import ERROR from 'utils';
+import ERROR, { log } from 'utils';
 
 interface QueueParams {
   userId: string;
@@ -26,6 +26,11 @@ export default class DeleteQueueService {
       throw new ErrorHandler(ERROR.USER_DOES_NOT_HAVE_PERMISSION);
     }
 
-    await this.entityManager.delete(Queue, queueId);
+    try {
+      await this.entityManager.delete(Queue, queueId);
+    } catch {
+      throw new ErrorHandler(ERROR.DATABASE_ERROR);
+    }
+    log.info(`Queue ${queueId} was deleted with success`);
   }
 }

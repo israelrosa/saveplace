@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
+import ERROR, { log } from 'utils';
 import authConfig from '../configs/auth';
 import ErrorHandler from '../utils/ErrorHandler';
-import ERROR from '../utils';
 
 interface ITokenPayload {
   userType: string;
@@ -18,6 +18,7 @@ const ensureAuthentication =
 
     if (!authHeader) {
       throw new ErrorHandler(ERROR.TOKEN_NOT_FOUND);
+      log.error(ERROR.TOKEN_NOT_FOUND.message);
     }
 
     const [, token] = authHeader.split(' ');
@@ -27,7 +28,7 @@ const ensureAuthentication =
       const { sub, userType } = decoded as ITokenPayload;
 
       if (type && userType !== type) {
-        throw new ErrorHandler(ERROR.INVALID_USER_TYPE);
+        throw new Error();
       }
 
       request.user = {
@@ -38,6 +39,7 @@ const ensureAuthentication =
       return next();
     } catch (err) {
       throw new ErrorHandler(ERROR.INVALID_TOKEN);
+      log.error(ERROR.INVALID_TOKEN.message);
     }
   };
 

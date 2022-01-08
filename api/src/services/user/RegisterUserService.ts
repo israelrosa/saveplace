@@ -1,7 +1,7 @@
 import User from 'models/User';
 import { getManager, EntityManager } from 'typeorm';
 import ErrorHandler from 'utils/ErrorHandler';
-import ERROR from 'utils';
+import ERROR, { log } from 'utils';
 
 interface RegisterUserData {
   name: string;
@@ -52,6 +52,7 @@ export default class RegisterUserService {
     }
     const user = await this.entityManager.create(User, data);
     const result = await this.entityManager.save(user);
+    log.info(`User ${result.id} created with success!`);
     return result;
   }
 }

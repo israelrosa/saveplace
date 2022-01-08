@@ -1,5 +1,6 @@
 import { EntityManager, getManager } from 'typeorm';
 import Queue from 'models/Queue';
+import { log } from 'utils';
 
 interface QueueParams {
   userId: string;
@@ -23,8 +24,10 @@ export default class CreateQueueService {
       userId,
     });
 
-    const result = await this.entityManager.save(queue);
+    const newQueue = await this.entityManager.save(queue);
 
-    return result;
+    log.info(`Queue ${newQueue.id} created by user ${userId}`);
+
+    return newQueue;
   }
 }

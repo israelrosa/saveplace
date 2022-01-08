@@ -1,4 +1,11 @@
+import winston from 'winston';
+
 export default {
+  DATABASE_ERROR: {
+    id: 'database_error',
+    message: 'Database error',
+    statusCode: 401,
+  },
   TOKEN_NOT_FOUND: {
     id: 'token_not_found',
     message: 'Token not found',
@@ -40,3 +47,17 @@ export default {
     statusCode: 401,
   },
 };
+
+const logFormat = winston.format.printf(
+  ({ level, message, timestamp }) => `${level} ${timestamp}] ${message}`,
+);
+
+export const log = winston.createLogger({
+  level: process.env.ENV === 'development' ? 'debug' : 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.splat(),
+    logFormat,
+  ),
+  transports: [new winston.transports.Console()],
+});

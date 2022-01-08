@@ -1,7 +1,7 @@
 import { EntityManager, getManager } from 'typeorm';
 import ErrorHandler from 'utils/ErrorHandler';
 import User from 'models/User';
-import ERROR from '../../utils';
+import ERROR, { log } from '../../utils';
 
 interface UserData {
   id: string;
@@ -29,16 +29,23 @@ export default class UpdateUserService {
       throw new ErrorHandler(ERROR.USER_NOT_FOUND);
     }
 
-    this.entityManager.update(User, user, {
-      name: data.name || user.name,
-      profileImage: data.profileImage || user.profileImage,
-      zipCode: data.zipCode || user.zipCode,
-      state: data.state || user.state,
-      street: data.street || user.street,
-      neighborhood: data.neighborhood || user.neighborhood,
-      city: data.city || user.city,
-      establishmentNumber: data.establishmentNumber || user.establishmentNumber,
-    });
+    try {
+      this.entityManager.update(User, user, {
+        name: data.name || user.name,
+        profileImage: data.profileImage || user.profileImage,
+        zipCode: data.zipCode || user.zipCode,
+        state: data.state || user.state,
+        street: data.street || user.street,
+        neighborhood: data.neighborhood || user.neighborhood,
+        city: data.city || user.city,
+        establishmentNumber:
+          data.establishmentNumber || user.establishmentNumber,
+      });
+    } catch {
+      throw new ErrorHandler(ERROR.DATABASE_ERROR);
+    }
+
+    log.info(`User ${user.id} was updated`);
 
     return user;
   }

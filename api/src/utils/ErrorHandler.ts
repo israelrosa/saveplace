@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { log } from 'utils';
 
 interface ErrorParams {
   id: string;
@@ -26,6 +27,7 @@ export function errorMiddleware(
   _: NextFunction,
 ): Response {
   if (error instanceof ErrorHandler) {
+    log.error(error.message);
     return response.status(error.statusCode).json({
       status: 'error',
       id: error.id,
@@ -33,8 +35,7 @@ export function errorMiddleware(
     });
   }
 
-  // eslint-disable-next-line no-console
-  console.log(error);
+  log.error(error);
 
   return response.status(500).json({
     status: 'error',

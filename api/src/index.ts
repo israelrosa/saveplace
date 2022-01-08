@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import 'express-async-errors';
 import { errorMiddleware } from 'utils/ErrorHandler';
 import router from './router';
+import { log } from './utils';
 
 createConnection();
 
@@ -17,5 +18,5 @@ server.use(errorMiddleware);
 
 server.listen(3080, () => {
   // eslint-disable-next-line no-console
-  console.log('Server listening on port 3080');
+  log.info('Server listening on port 3080 in mode: %s', process.env.NODE_ENV);
 });
