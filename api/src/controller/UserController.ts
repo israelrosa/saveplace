@@ -25,7 +25,7 @@ export default class UserController {
 
     const registerUserService = new RegisterUserService();
 
-    const result = await registerUserService.exec({
+    const user = await registerUserService.exec({
       name,
       email,
       phone,
@@ -39,7 +39,7 @@ export default class UserController {
       establishmentNumber,
     });
 
-    return response.status(200).json(result);
+    return response.status(200).json(instanceToPlain(user));
   }
 
   async authenticate(request: Request, response: Response): Promise<Response> {
