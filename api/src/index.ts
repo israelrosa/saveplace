@@ -1,16 +1,22 @@
 import 'reflect-metadata';
 import express from 'express';
-import { createConnection } from 'typeorm';
 import 'express-async-errors';
 import { errorMiddleware } from 'utils/ErrorHandler';
+import { createConnection } from 'typeorm';
 import router from './router';
 import { log } from './utils';
 
-createConnection();
+createConnection().then(connection => {
+  connection.runMigrations({ transaction: 'all' }).then(migrations => {
+    migrations.forEach(migration => {
+      log.info('Migration %s was runned', migration.name);
+    });
+  });
+});
 
 const server = express();
 
-server.use(express.json());
+server.use(express.json({ limit: '2mb' }));
 
 server.use(router);
 
