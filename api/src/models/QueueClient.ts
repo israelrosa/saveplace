@@ -10,7 +10,7 @@ import Queue from './Queue';
 import User from './User';
 
 @Entity('queueClients')
-export default class QueueClients {
+export default class QueueClient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

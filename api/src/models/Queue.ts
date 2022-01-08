@@ -8,7 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import QueueClients from './QueueClients';
+import QueueClient from './QueueClient';
 import Tag from './Tag';
 import User from './User';
 
@@ -41,8 +41,8 @@ export default class Queue {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => QueueClients, queueClients => queueClients.queue)
-  clients: QueueClients[];
+  @OneToMany(() => QueueClient, queueClient => queueClient.queue)
+  clients: QueueClient[];
 
   @ManyToOne(() => Tag, tag => tag.queues)
   @JoinColumn({ name: 'tagId' })
