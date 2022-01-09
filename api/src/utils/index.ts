@@ -1,6 +1,11 @@
 import winston from 'winston';
 
 export default {
+  NEXT_CLIENT_DOES_NOT_EXIST: {
+    id: 'NEXT_CLIENT_DOES_NOT_EXIST',
+    message: 'The next client is undefined',
+    statusCode: 401,
+  },
   DATABASE_ERROR: {
     id: 'database_error',
     message: 'Database error',
@@ -40,6 +45,11 @@ export default {
     id: 'invalid_user',
     message: 'User not found',
     statusCode: 422,
+  },
+  USER_ALREADY_JOINED_IN_QUEUE: {
+    id: 'user_already_joined_in_queue',
+    message: 'User already joined in a queue',
+    statusCode: 401,
   },
   USER_DOES_NOT_HAVE_PERMISSION: {
     id: 'user_does_not_have_permission',

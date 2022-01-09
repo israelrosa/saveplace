@@ -1,19 +1,21 @@
-import QueueController from 'controller/QueueController';
+import QueuesController from 'controller/QueuesController';
 import { Router } from 'express';
 import ensureAuthentication from 'middlewares/ensureAuthentication';
 import { UserType } from '../models/User';
 
-const queueRouter = Router();
-const queueController = new QueueController();
+const queuesRouter = Router();
+const queuesController = new QueuesController();
 
-queueRouter.post(
+queuesRouter.post(
   '/',
   ensureAuthentication(UserType.ESTABLISHMENT),
-  queueController.create,
+  queuesController.create,
 );
-queueRouter.delete(
+queuesRouter.delete(
   '/:queueId/',
   ensureAuthentication(UserType.ESTABLISHMENT),
+  queuesController.delete,
+);
 queuesRouter.get('/', queuesController.getAll);
 queuesRouter.get('/:queueId/', ensureAuthentication(), queuesController.get);
 queuesRouter.get(
@@ -21,6 +23,10 @@ queuesRouter.get(
   ensureAuthentication(UserType.ESTABLISHMENT),
   queuesController.getClients,
 );
+queuesRouter.patch(
+  '/:queueId/actions/call/next/',
+  ensureAuthentication(UserType.ESTABLISHMENT),
+  queuesController.callNextClient,
 );
 
-export default queueRouter;
+export default queuesRouter;
