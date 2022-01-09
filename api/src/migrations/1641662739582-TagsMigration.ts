@@ -10,6 +10,7 @@ export default class TagsMigration1641662739582 implements MigrationInterface {
       'Farmácia',
       'Padaria',
       'Loja',
+      'Dentista',
       'Serviço Público',
       'Outros',
     ];
