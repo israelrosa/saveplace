@@ -36,6 +36,8 @@ export function errorMiddleware(
   }
 
   log.error(error);
+  // eslint-disable-next-line no-console
+  console.log(error);
 
   return response.status(500).json({
     status: 'error',
