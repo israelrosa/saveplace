@@ -68,7 +68,7 @@ export default class User {
   updatedAt: Date;
 
   @OneToMany(() => QueueClient, queueClient => queueClient.user)
-  queuesClients: QueueClient[];
+  queueClients: QueueClient[];
 
   @OneToMany(() => Queue, queue => queue.user)
   queues: Queue[];
