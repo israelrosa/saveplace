@@ -9,15 +9,27 @@ import {
 import Queue from './Queue';
 import User from './User';
 
+// eslint-disable-next-line no-shadow
+export enum QueueClientType {
+  WAITING = 'waiting',
+  ATTENDED = 'attended',
+  EXITED = 'exited',
+  CURRENT = 'current',
+}
+
 @Entity('queueClients')
 export default class QueueClient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  code: string;
+  code: number;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: QueueClientType,
+    default: QueueClientType.WAITING,
+  })
   status: string;
 
   @Column()
@@ -26,7 +38,7 @@ export default class QueueClient {
   @Column()
   userId: string;
 
-  @Column()
+  @Column({ nullable: true })
   attendedOn: Date;
 
   @CreateDateColumn()
@@ -36,7 +48,7 @@ export default class QueueClient {
   @JoinColumn({ name: 'queueId' })
   queue: Queue;
 
-  @ManyToOne(() => User, user => user.queues)
+  @ManyToOne(() => User, user => user.queueClients)
   @JoinColumn({ name: 'userId' })
   user: User;
 }

@@ -6,6 +6,7 @@ import userRouter from './user.routes';
 const router = Router();
 const userController = new UserController();
 
+router.use('/clients', queueClientsRouter);
 router.use('/tags', tagsRouter);
 
 export default router;
