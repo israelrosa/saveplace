@@ -66,7 +66,6 @@ export default class Queue {
   nextClient() {
     let nextCode = this.currentCode + 1;
     const orderedClients = this.clients.sort((a, b) => a.code - b.code);
-
     const nextClient = orderedClients.find(client => {
       const isNext = client.code === nextCode;
       const isWaiting = client.status !== QueueClientType.EXITED;
@@ -75,7 +74,7 @@ export default class Queue {
         nextCode += 1;
         return false;
       }
-      if (!isNext && isWaiting) {
+      if (!isNext) {
         return false;
       }
 
