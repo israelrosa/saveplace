@@ -7,7 +7,7 @@ import RegisterUserService from 'services/user/RegisterUserService';
 import ShowUserInfoService from 'services/user/ShowUserInfoService';
 import UpdateUserService from 'services/user/UpdateUserService';
 
-export default class UserController {
+export default class UsersController {
   async register(request: Request, response: Response): Promise<Response> {
     const {
       name,
