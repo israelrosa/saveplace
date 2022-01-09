@@ -65,7 +65,9 @@ export default class Queue {
   @Expose({ name: 'nextClient' })
   nextClient() {
     let nextCode = this.currentCode + 1;
-    const nextClient = this.clients.find(client => {
+    const orderedClients = this.clients.sort((a, b) => a.code - b.code);
+
+    const nextClient = orderedClients.find(client => {
       const isNext = client.code === nextCode;
       const isWaiting = client.status !== QueueClientType.EXITED;
 
