@@ -11,5 +11,10 @@ queueClientsRouter.post(
   ensureAuthentication(UserType.CLIENT),
   queueClientsController.join,
 );
+queueClientsRouter.patch(
+  '/:queueClientId/actions/quit/',
+  ensureAuthentication(UserType.CLIENT),
+  queueClientsController.quit,
+);
 
 export default queueClientsRouter;

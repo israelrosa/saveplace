@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import DeleteQueueService from 'services/queue/DeleteQueueService';
+import ExitQueueService from 'services/queueClient/ExitQueueService';
 import JoinQueueService from 'services/queueClient/JoinQueueService';
 
 export default class QueueClientsController {
@@ -19,15 +19,15 @@ export default class QueueClientsController {
 
   async quit(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { queueId } = request.params;
+    const { queueClientId } = request.params;
 
-    const deleteQueueService = new DeleteQueueService();
+    const exitQueueService = new ExitQueueService();
 
-    await deleteQueueService.exec({
-      queueId,
+    const queueClient = await exitQueueService.exec({
       userId: id,
+      queueClientId,
     });
 
-    return response.status(200);
+    return response.status(200).json(queueClient);
   }
 }

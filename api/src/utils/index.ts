@@ -51,6 +51,11 @@ export default {
     message: 'User already joined in a queue',
     statusCode: 401,
   },
+  USER_ALREADY_EXITED_OR_ATTENDED: {
+    id: 'user_already_exited_or_attended',
+    message: 'User has already left or was attended in the queue',
+    statusCode: 401,
+  },
   USER_DOES_NOT_HAVE_PERMISSION: {
     id: 'user_does_not_have_permission',
     message: 'User does not have permission',

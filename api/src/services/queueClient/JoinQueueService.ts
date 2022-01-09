@@ -2,7 +2,7 @@ import { EntityManager, getManager } from 'typeorm';
 import Queue from 'models/Queue';
 import QueueClient, { QueueClientType } from 'models/QueueClient';
 import ErrorHandler from 'utils/ErrorHandler';
-import ERROR from 'utils';
+import ERROR, { log } from 'utils';
 
 interface QueueClientParams {
   userId: string;
@@ -49,6 +49,8 @@ export default class JoinQueueService {
     });
 
     const result = await this.entityManager.save(queueClient);
+
+    log.info(`User ${userId} was joinned the queue ${queueId}`);
 
     return result;
   }
