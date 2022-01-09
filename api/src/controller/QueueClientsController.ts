@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import DeleteQueueService from 'services/queue/DeleteQueueService';
-import JoinQueueService from 'services/queueClient/JoinQueueClient';
+import JoinQueueService from 'services/queueClient/JoinQueueService';
 
 export default class QueueClientsController {
   async join(request: Request, response: Response): Promise<Response> {
