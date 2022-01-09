@@ -14,7 +14,13 @@ queueRouter.post(
 queueRouter.delete(
   '/:queueId/',
   ensureAuthentication(UserType.ESTABLISHMENT),
-  queueController.delete,
+queuesRouter.get('/', queuesController.getAll);
+queuesRouter.get('/:queueId/', ensureAuthentication(), queuesController.get);
+queuesRouter.get(
+  '/:queueId/clients',
+  ensureAuthentication(UserType.ESTABLISHMENT),
+  queuesController.getClients,
+);
 );
 
 export default queueRouter;
