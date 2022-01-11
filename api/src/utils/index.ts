@@ -56,6 +56,11 @@ export default {
     message: 'User has already left or was attended in the queue',
     statusCode: 401,
   },
+  USER_DOES_NOT_HAVE_CURRENT_QUEUE: {
+    id: 'user_does_not_have_current_queue',
+    message: 'User does not have a current queue',
+    statusCode: 401,
+  },
   USER_DOES_NOT_HAVE_PERMISSION: {
     id: 'user_does_not_have_permission',
     message: 'User does not have permission',

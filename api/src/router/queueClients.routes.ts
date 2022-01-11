@@ -6,11 +6,13 @@ import { UserType } from '../models/User';
 const queueClientsRouter = Router();
 const queueClientsController = new QueueClientsController();
 
-queueClientsRouter.post(
-  '/',
-  ensureAuthentication(UserType.CLIENT),
-  queueClientsController.join,
-);
+queueClientsRouter
+  .route('/')
+  .post(ensureAuthentication(UserType.CLIENT), queueClientsController.join)
+  .get(
+    ensureAuthentication(UserType.CLIENT),
+    queueClientsController.currentQueue,
+  );
 queueClientsRouter.patch(
   '/:queueClientId/actions/quit/',
   ensureAuthentication(UserType.CLIENT),
