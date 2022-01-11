@@ -1,6 +1,7 @@
 import React from 'react';
 import Router from 'router';
 import {ThemeProvider} from 'styled-components';
+import { Provider as PaperProvider } from 'react-native-paper';
 // import dark from './src/styles/themes/dark';
 import * as openSans from '@expo-google-fonts/open-sans';
 import light from './src/styles/themes/light';
@@ -18,7 +19,13 @@ const App = () => {
     OpenSans_800ExtraBold: openSans.OpenSans_800ExtraBold,
     OpenSans_800ExtraBold_Italic: openSans.OpenSans_800ExtraBold_Italic,
   });
-  return <ThemeProvider theme={light}>{isFontLoaded && <Router />}</ThemeProvider>;
+  return (
+    <PaperProvider>
+      <ThemeProvider theme={light}>
+        {isFontLoaded && <Router />}
+      </ThemeProvider>
+    </PaperProvider>
+  )
 };
 
 export default App;
