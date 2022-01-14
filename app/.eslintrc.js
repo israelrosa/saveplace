@@ -1,15 +1,30 @@
 module.exports = {
-  root: true,
-  extends: [
-    '@react-native-community',
-    'airbnb',
-    'prettier',
-    'plugin:prettier/recommended',
-    'eslint-config-prettier',
-  ],
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ['plugin:react/recommended', 'prettier', 'plugin:prettier/recommended', 'airbnb'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 13,
+    sourceType: 'module',
+  },
+  plugins: ['prettier', '@typescript-eslint'],
   rules: {
-    'react/prop-types': 'off',
+    'react/function-component-definition': [
+      1,
+      {
+        namedComponents: 'arrow-function',
+      },
+    ],
     'import/prefer-default-export': 'off',
+    'react/style-prop-object': 'off',
+    'arrow-parens': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'object-curly-newline': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -23,8 +38,6 @@ module.exports = {
       },
     ],
     'import/no-unresolved': 'off',
-    'react/jsx-props-no-spreading': 'off',
-    'react-native/no-inline-styles': 'off',
     'react/jsx-filename-extension': [
       1,
       {
@@ -34,15 +47,10 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        trailingComma: 'es5',
+        jsxBracketSameLine: false,
         singleQuote: true,
         printWidth: 100,
       },
     ],
   },
-  settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx', '.mjs'],
-  },
-  parser: 'babel-eslint',
-  plugins: ['prettier'],
 };

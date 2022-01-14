@@ -2,21 +2,50 @@ import 'styled-components';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    primary: string,
-    text: {
+    fonts: {
+      title: {
+        fontSize: number,
+        fontFamily: string,
+      }
+      subTitle: {
+        fontSize: number,
+        fontFamily: string,
+      }
+      span: {
+        fontSize: number,
+        fontFamily: string,
+      }
+      spanBold: {
+        fontSize: number,
+        fontFamily: string,
+      }
+      section: {
+        fontSize: number,
+        fontFamily: string,
+      }
+      hero: {
+        fontSize: number,
+        fontFamily: string,
+      }
+    }
+    colors: {
       primary: string,
-      secondary: string,
-      neutral: string,
-    },
-    border: string,
-    background: {
-      main: string,
-      lightBlue: string,
-      darkestBlue: string,
-      darkBlue: string,
-      grey: string,
-      darkGrey: string,
-      button: string,
-    },
+      text: {
+        primary: string,
+        reverse: string,
+        secondary: string,
+        neutral: string,
+      },
+      border: string,
+      background: {
+        main: string,
+        lightBlue: string,
+        darkestBlue: string,
+        darkBlue: string,
+        grey: string,
+        darkGrey: string,
+        button: string,
+      },
+    }
   }
 }
