@@ -20,6 +20,7 @@ module.exports = {
         namedComponents: 'arrow-function',
       },
     ],
+    'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
     'import/prefer-default-export': 'off',
     'react/style-prop-object': 'off',
     'arrow-parens': 'off',
