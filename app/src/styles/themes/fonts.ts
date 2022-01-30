@@ -16,8 +16,14 @@ export default {
     fontFamily: 'OpenSans_700Bold',
   },
   section: {
-    fontSize: 18,
-    fontFamily: 'OpenSans_700Bold',
+    main: {
+      fontSize: 18,
+      fontFamily: 'OpenSans_400Regular',
+    },
+    bold: {
+      fontSize: 18,
+      fontFamily: 'OpenSans_700Bold',
+    },
   },
   hero: {
     fontSize: 48,

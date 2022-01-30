@@ -20,8 +20,14 @@ declare module 'styled-components' {
         fontFamily: string,
       }
       section: {
-        fontSize: number,
-        fontFamily: string,
+        main: {
+          fontSize: number,
+          fontFamily: string,
+        }
+        bold: {
+          fontSize: number,
+          fontFamily: string,
+        }
       }
       hero: {
         fontSize: number,

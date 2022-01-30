@@ -39,17 +39,3 @@ export const Name = styled.Text`
   margin-top: 12px;
   margin-bottom: 32px;
 `;
-
-export const Option = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 72px;
-  width: 100%;
-  padding: 0 24px;
-  border-width: 1px;
-  border-color: ${(props) => props.theme.colors.border};
-  border-radius: 8px;
-  margin-bottom: 8px;
-  background-color: #ffffff;
-`;

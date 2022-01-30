@@ -1,8 +1,12 @@
+import Option from 'components/Option';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { useTheme } from 'styled-components';
+import UilUserCircle from '@iconscout/react-native-unicons/icons/uil-user-circle';
+import UilUsersAlt from '@iconscout/react-native-unicons/icons/uil-users-alt';
 
-import { Container, ContentContainer, Header, HeaderImage, Name, Option } from './styles';
+import UilExit from 'icons/UilExit';
+import { Container, ContentContainer, Header, HeaderImage, Name } from './styles';
 
 const Profile: React.FC = () => {
   const theme = useTheme();
@@ -18,9 +22,13 @@ const Profile: React.FC = () => {
           }}
         />
         <Name>Banco Original</Name>
-        <Option />
-        <Option />
-        <Option />
+        <Option icon={<UilUserCircle size={30} color={theme.colors.text.primary} />} text="Conta" />
+        <Option icon={<UilUsersAlt size={30} color={theme.colors.text.primary} />} text="Filas" />
+        <Option
+          icon={<UilExit size={30} color={theme.colors.text.primary} />}
+          text="Sair"
+          hideArrowRight
+        />
       </ContentContainer>
     </Container>
   );

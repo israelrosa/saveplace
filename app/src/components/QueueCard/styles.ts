@@ -49,8 +49,8 @@ export const FooterInfo = styled.View`
 
 export const FooterTextNumber = styled.Text`
   color: ${(props) => props.theme.colors.text.primary};
-  font-size: ${(props) => props.theme.fonts.section.fontSize}px;
-  font-family: ${(props) => props.theme.fonts.section.fontFamily};
+  font-size: ${(props) => props.theme.fonts.section.bold.fontSize}px;
+  font-family: ${(props) => props.theme.fonts.section.bold.fontFamily};
 `;
 
 export const FooterText = styled.Text`
