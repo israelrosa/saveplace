@@ -23,4 +23,10 @@ export default {
     fontSize: 48,
     fontFamily: 'OpenSans_700Bold',
   },
+  caption: {
+    bold: {
+      fontSize: 12,
+      fontFamily: 'OpenSans_700Bold',
+    },
+  },
 };

@@ -9,15 +9,27 @@ export const Container = styled.View`
 `;
 export const Header = styled.View`
   width: 100%;
-  height: 120px;
+  height: 94px;
   background-color: ${(props) => props.theme.colors.primary};
-  flex-direction: row;
+  padding: 0 24px;
 `;
 
 export const HeaderText = styled.Text`
   color: ${(props) => props.theme.colors.text.reverse};
   font-size: ${(props) => props.theme.fonts.subTitle.fontSize}px;
   font-family: ${(props) => props.theme.fonts.subTitle.fontFamily};
-  margin-left: 24px;
   margin-top: 12px;
+  margin-bottom: 24px;
+`;
+
+export const FiltersContainer = styled.ScrollView`
+  flex-direction: row;
+  margin-top: 26px;
+  max-height: 56px;
+  padding: 0 24px;
+  padding-top: 16px;
+`;
+
+export const Content = styled.ScrollView`
+  padding: 24px;
 `;

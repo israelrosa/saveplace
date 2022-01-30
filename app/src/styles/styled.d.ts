@@ -27,6 +27,12 @@ declare module 'styled-components' {
         fontSize: number,
         fontFamily: string,
       }
+      caption: {
+        bold: {
+          fontSize: number,
+          fontFamily: string,
+        }
+      }
     }
     colors: {
       primary: string,
