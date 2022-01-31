@@ -4,8 +4,10 @@ import { ThemeProvider } from 'styled-components';
 import { Provider as PaperProvider } from 'react-native-paper';
 // import dark from './src/styles/themes/dark';
 import * as openSans from '@expo-google-fonts/open-sans';
+import { Provider } from 'react-redux';
 import light from './src/styles/themes/light';
 import fonts from './src/styles/themes/fonts';
+import { store } from './src/store';
 
 const App = () => {
   const theme = {
@@ -25,9 +27,11 @@ const App = () => {
     OpenSans_800ExtraBold_Italic: openSans.OpenSans_800ExtraBold_Italic,
   });
   return (
-    <PaperProvider>
-      <ThemeProvider theme={theme}>{isFontLoaded && <Router />}</ThemeProvider>
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider>
+        <ThemeProvider theme={theme}>{isFontLoaded && <Router />}</ThemeProvider>
+      </PaperProvider>
+    </Provider>
   );
 };
 
