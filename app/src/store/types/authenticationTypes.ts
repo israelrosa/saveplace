@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 export const types: { [id: string]: string } = {
   AUTH_LOGOUT: 'AUTH_LOGOUT',
   AUTH_LOGIN: 'AUTH_LOGIN',
@@ -15,4 +17,7 @@ export interface AuthenticationStore {
   accessToken: string;
   refreshToken: string;
   updateTokenTimerId: number;
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  error?: AxiosError;
 }
