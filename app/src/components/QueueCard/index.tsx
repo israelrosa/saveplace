@@ -1,4 +1,5 @@
 import React from 'react';
+import UilAngleRight from '@iconscout/react-native-unicons/icons/uil-angle-right-b';
 import UilUsersAlt from '@iconscout/react-native-unicons/icons/uil-users-alt';
 import UilClock from '@iconscout/react-native-unicons/icons/uil-clock';
 
@@ -32,9 +33,10 @@ const QueueCard: React.FC<QueueCardProps> = ({
   return (
     <Container>
       <Content>
-        <ContentImage source={{ uri: image }} />
+        {image && <ContentImage source={{ uri: image }} />}
         <ContentInfo>
           <Title>{title}</Title>
+          <UilAngleRight size={24} color={theme.colors.text.neutral} />
         </ContentInfo>
       </Content>
       <Footer>

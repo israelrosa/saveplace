@@ -8,6 +8,7 @@ import Search from 'screens/Search';
 import { useTheme } from 'styled-components';
 import UilUserCircle from '@iconscout/react-native-unicons/icons/uil-user-circle';
 import UilUsers from '@iconscout/react-native-unicons/icons/uil-users-alt';
+import Queues from 'screens/Queues';
 import UilHome from '../icons/UilHome';
 import SignIn from '../screens/SignIn';
 import SignOn from '../screens/SignOn';
@@ -40,6 +41,17 @@ const Routes = () => {
           tabBarIcon: ({ color, focused }) => (
             <Container backgroundColor={focused && theme.colors.primary}>
               <UilHome color={color} size={24} />
+            </Container>
+          ),
+        }}
+      />
+      <RoutesStack.Screen
+        name="Queues"
+        component={Queues}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Container backgroundColor={focused && theme.colors.primary}>
+              <UilUsers color={color} size={24} />
             </Container>
           ),
         }}

@@ -30,6 +30,10 @@ export default {
     fontFamily: 'OpenSans_700Bold',
   },
   caption: {
+    main: {
+      fontSize: 12,
+      fontFamily: 'OpenSans_400Regular',
+    },
     bold: {
       fontSize: 12,
       fontFamily: 'OpenSans_700Bold',

@@ -6,11 +6,11 @@ export const Container = styled.View`
   width: 100%;
   background-color: ${(props) => props.theme.colors.background.main};
   padding-top: ${StatusBar.currentHeight}px;
+  position: relative;
 `;
 
 export const Header = styled.View`
   width: 100%;
-  height: 94px;
   background-color: ${(props) => props.theme.colors.primary};
   padding: 0 24px;
 `;
@@ -21,14 +21,6 @@ export const HeaderText = styled.Text`
   font-family: ${(props) => props.theme.fonts.subTitle.fontFamily};
   margin-top: 12px;
   margin-bottom: 24px;
-`;
-
-export const FiltersContainer = styled.ScrollView`
-  flex-direction: row;
-  margin-top: 26px;
-  max-height: 56px;
-  padding: 0 24px;
-  padding-top: 16px;
 `;
 
 export const Content = styled.ScrollView`

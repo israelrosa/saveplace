@@ -1,6 +1,10 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+interface CaptionProps {
+  color: string;
+}
+
+export const Container = styled.TouchableOpacity`
   border-width: 1px;
   border-color: ${(props) => props.theme.colors.border};
   border-radius: 8px;
@@ -20,6 +24,17 @@ export const ContentImage = styled.Image`
 
 export const ContentInfo = styled.View`
   margin-left: 12px;
+  flex-direction: row;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+`;
+
+export const Caption = styled.Text<CaptionProps>`
+  color: ${(props) => props.color};
+  font-size: ${(props) => props.theme.fonts.caption.main.fontSize}px;
+  font-family: ${(props) => props.theme.fonts.caption.main.fontFamily};
 `;
 
 export const Title = styled.Text`

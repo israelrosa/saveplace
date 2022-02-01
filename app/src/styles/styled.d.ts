@@ -34,6 +34,10 @@ declare module 'styled-components' {
         fontFamily: string,
       }
       caption: {
+        main: {
+          fontSize: number,
+          fontFamily: string,
+        }
         bold: {
           fontSize: number,
           fontFamily: string,
