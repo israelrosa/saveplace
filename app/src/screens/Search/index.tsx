@@ -2,13 +2,47 @@ import ChipTag from 'components/ChipTag';
 import QueueCard from 'components/QueueCard';
 import SearchInput from 'components/SearchInput';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from 'styled-components';
+import * as Location from 'expo-location';
+import * as TaskManager from 'expo-task-manager';
 
 import { Container, Content, FiltersContainer, Header, HeaderText } from './styles';
 
 const Search: React.FC = () => {
+  // const [location, setLocation] = useState(null);
   const theme = useTheme();
+  const TASK_FETCH_LOCATION = 'TASK_FETCH_LOCATION';
+
+  TaskManager.defineTask(TASK_FETCH_LOCATION, async ({ data: { locations }, error }) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    console.log(locations);
+  });
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      await Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
+        accuracy: Location.Accuracy.Highest,
+        distanceInterval: 1, // minimum change (in meters) betweens updates
+        deferredUpdatesInterval: 1000, // minimum interval (in milliseconds) between updates
+        // foregroundService is how you get the task to be updated as often as would
+        // be if the app was open
+        foregroundService: {
+          notificationTitle: 'Using your location',
+          notificationBody: 'To turn off, go back to the app and switch something off.',
+        },
+      });
+    })();
+  }, []);
   return (
     <Container>
       <StatusBar backgroundColor={theme.colors.primary} style="light" />

@@ -4785,6 +4785,14 @@ expo-linear-gradient@^11.0.0:
   resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-11.0.0.tgz#88605aad93ee73c32110e83e89ef17bb13c330b5"
   integrity sha512-OVzmsz5y+NxX4XvtQhKAQCdakVaAwFB0ajYlcT50zl1MKU33LrBa8hxSe3qo8CCGSZSfjdfzGvyZ1cf12BXI9Q==
 
+expo-location@~14.0.1:
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-14.0.1.tgz#28a5ab1296a103202bb7598539cf78e2f0be5991"
+  integrity sha512-P3Mrty7uxezBFE9SwYhskeNwwHAapw/6lrLj2fYILgJkNiXv28ns5CwSNsTtJ+MfeHeV93t20qrkk7kJ30SQVw==
+  dependencies:
+    "@expo/config-plugins" "^4.0.2"
+    unimodules-task-manager-interface "~7.1.0"
+
 expo-modules-autolinking@0.5.5, expo-modules-autolinking@~0.5.1:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-0.5.5.tgz#6bcc42072dcbdfca79d207b7f549f1fdb54a2b74"
@@ -4835,6 +4843,15 @@ expo-status-bar@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.2.0.tgz#16e73205da563f9536f562e439081e30e318a82e"
   integrity sha512-pVZZ/kDCXFK79E4dCtRecs3XLC8aiwlciutSd/fFmUPJSQZ1Txia6hlKajPt0GAYft8/YnT0V3URXzWZOBniYQ==
+
+expo-task-manager@~10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/expo-task-manager/-/expo-task-manager-10.1.0.tgz#f1b1d97585be08541d36f28072a633b0c805ac9a"
+  integrity sha512-IqkJBOz8pF5jYE4Do5QkH6rNUvfio4HegeLfgqSTL44T+YSfmCgvucp/Ho2+B68EQR4gxQioKtgHVfArRva5sg==
+  dependencies:
+    "@expo/config-plugins" "^4.0.2"
+    unimodules-app-loader "~3.0.0"
+    unimodules-task-manager-interface "7.1.0"
 
 expo@^44.0.4:
   version "44.0.4"
@@ -9363,6 +9380,11 @@ unimodules-app-loader@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/unimodules-app-loader/-/unimodules-app-loader-3.0.0.tgz#a92cf7fdf617ea2ad01e441f9ffedcf72abd7ea7"
   integrity sha512-PIcqwfMsKD9NyUEU62n2AwcaD3jNnJA2/xaialk7AzKM+pNwxW08h/tA3t9IoePZj5kWXTYLp49f4M6+puCKPw==
+
+unimodules-task-manager-interface@7.1.0, unimodules-task-manager-interface@~7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/unimodules-task-manager-interface/-/unimodules-task-manager-interface-7.1.0.tgz#01a981a8ff638843ce34f83a1ed73e81f62304d5"
+  integrity sha512-Iu6naIWWNWB69zFO6njRYj1GcfqAFnaK0hBub2zU6vvUu5A+YibZfXm5MTMq3zKfDeHrvEgVzUQszSbkjurinA==
 
 unimodules-task-manager-interface@~7.0.0:
   version "7.0.3"
