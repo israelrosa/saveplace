@@ -14,6 +14,14 @@ module.exports = {
   },
   plugins: ['prettier', '@typescript-eslint'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        jsxBracketSameLine: false,
+        singleQuote: true,
+        printWidth: 100,
+      },
+    ],
     'react/function-component-definition': [
       1,
       {
@@ -26,6 +34,7 @@ module.exports = {
     'arrow-parens': 'off',
     'react/jsx-props-no-spreading': 'off',
     'object-curly-newline': 'off',
+    'comma-dangle': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -43,14 +52,6 @@ module.exports = {
       1,
       {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-    ],
-    'prettier/prettier': [
-      'error',
-      {
-        jsxBracketSameLine: false,
-        singleQuote: true,
-        printWidth: 100,
       },
     ],
   },

@@ -87,9 +87,9 @@ const Stack = createNativeStackNavigator();
 const Router = () => (
   <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Routes" component={Routes} />
       <Stack.Screen name="SignOn" component={SignOn} />
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="Routes" component={Routes} />
     </Stack.Navigator>
   </NavigationContainer>
 );

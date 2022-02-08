@@ -5,6 +5,7 @@ export default {
     secondary: '#A39EBE',
     neutral: '#BEBEBE',
     reverse: '#FFFFFF',
+    error: '#C80000',
   },
   border: '#D7D7D7',
   background: {

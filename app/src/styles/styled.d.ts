@@ -51,6 +51,7 @@ declare module 'styled-components' {
         reverse: string,
         secondary: string,
         neutral: string,
+        error: string,
       },
       border: string,
       background: {
