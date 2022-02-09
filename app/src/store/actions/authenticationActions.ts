@@ -45,8 +45,8 @@ export const login = (email, password) => {
   function request() {
     return { type: types.USER_LOGIN_REQUEST };
   }
-  function success(user) {
-    return { type: types.USER_LOGIN_SUCCESS, user };
+  function success(payload) {
+    return { type: types.USER_LOGIN_SUCCESS, payload };
   }
   function failure(error) {
     return { type: types.USER_LOGIN_FAILURE, error };
@@ -57,7 +57,7 @@ export const login = (email, password) => {
 
     api
       .post('/token/', { email, password })
-      .then((user) => dispatch(success(user)))
+      .then((user) => dispatch(success(user.data)))
       .catch((error) => dispatch(failure(error.toString())));
   };
 };

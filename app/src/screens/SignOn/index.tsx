@@ -5,11 +5,13 @@ import { TouchableOpacity } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import SelectOption from 'components/SelectOption';
+import { useNavigation } from '@react-navigation/native';
 import { ActionsContainer, Container, InputsContainer, TextButton, HeaderText } from './styles';
 import Input from '../../components/Input';
 
 const SignOn: React.FC = () => {
   const formRef = useRef();
+  const navigator = useNavigation();
   const [userType, setUserType] = useState('client');
 
   const handleSubmit = async (data) => {
@@ -52,7 +54,10 @@ const SignOn: React.FC = () => {
         </InputsContainer>
         <ActionsContainer>
           <CustomButton text="Criar" onPress={() => formRef.current.submitForm()} />
-          <TouchableOpacity style={{ width: '100%', alignItems: 'center', marginTop: 32 }}>
+          <TouchableOpacity
+            style={{ width: '100%', alignItems: 'center', marginTop: 32 }}
+            onPress={() => navigator.navigate('SignIn')}
+          >
             <TextButton>Já tenho uma conta</TextButton>
           </TouchableOpacity>
         </ActionsContainer>

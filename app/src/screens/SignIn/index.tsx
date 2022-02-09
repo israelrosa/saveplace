@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from 'components/CustomButton';
 import { TouchableOpacity } from 'react-native';
@@ -6,6 +6,9 @@ import SignInImage from 'assets/SignInImage';
 import { useTheme } from 'styled-components';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
+import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
+import { login } from 'store/actions/authenticationActions';
+import { useNavigation } from '@react-navigation/native';
 import {
   ActionsContainer,
   Container,
@@ -21,6 +24,14 @@ import Input from '../../components/Input';
 const SignIn: React.FC = () => {
   const theme = useTheme();
   const formRef = useRef(null);
+  const navigator = useNavigation();
+  const dispatch = useAppDispatch();
+  const { auth } = useAppSelector((state) => state);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(auth?.isLoading);
+  }, [auth, isLoading]);
 
   const handleSubmit = async (data) => {
     try {
@@ -36,6 +47,8 @@ const SignIn: React.FC = () => {
         abortEarly: false,
       });
       // Validation passed
+      const { email, password } = data;
+      dispatch(login(email, password));
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
@@ -62,13 +75,14 @@ const SignIn: React.FC = () => {
         </InputsContainer>
         <ActionsContainer>
           <CustomButton
+            isLoading={isLoading}
             color={theme.colors.primary}
             text="Entrar"
             onPress={() => formRef.current.submitForm()}
           />
           <RegisterAction>
             <RegisterText>Não possui uma conta?</RegisterText>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigator.navigate('SignOn')}>
               <TextButton>Cadastrar-se</TextButton>
             </TouchableOpacity>
           </RegisterAction>

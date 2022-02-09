@@ -1,10 +1,10 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import Router from 'router';
 import { ThemeProvider } from 'styled-components';
 import { Provider as PaperProvider } from 'react-native-paper';
 // import dark from './src/styles/themes/dark';
 import * as openSans from '@expo-google-fonts/open-sans';
-import { Provider } from 'react-redux';
 import light from './src/styles/themes/light';
 import fonts from './src/styles/themes/fonts';
 import { store } from './src/store';
@@ -26,6 +26,7 @@ const App = () => {
     OpenSans_800ExtraBold: openSans.OpenSans_800ExtraBold,
     OpenSans_800ExtraBold_Italic: openSans.OpenSans_800ExtraBold_Italic,
   });
+
   return (
     <Provider store={store}>
       <PaperProvider>

@@ -8,7 +8,7 @@ import usersRouter from './users.routes';
 const router = Router();
 const usersController = new UsersController();
 
-router.post('/token', usersController.authenticate);
+router.post('/token/', usersController.authenticate);
 router.use('/users', usersRouter);
 router.use('/queues', queuesRouter);
 router.use('/clients', queueClientsRouter);
