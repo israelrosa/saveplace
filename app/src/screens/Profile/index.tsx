@@ -22,10 +22,16 @@ const Profile: React.FC = () => {
           }}
         />
         <Name>Banco Original</Name>
-        <Option icon={<UilUserCircle size={30} color={theme.colors.text.primary} />} text="Conta" />
-        <Option icon={<UilUsersAlt size={30} color={theme.colors.text.primary} />} text="Filas" />
         <Option
-          icon={<UilExit size={30} color={theme.colors.text.primary} />}
+          iconLeft={<UilUserCircle size={30} color={theme.colors.text.primary} />}
+          text="Conta"
+        />
+        <Option
+          iconLeft={<UilUsersAlt size={30} color={theme.colors.text.primary} />}
+          text="Filas"
+        />
+        <Option
+          iconLeft={<UilExit size={30} color={theme.colors.text.primary} />}
           text="Sair"
           hideArrowRight
         />

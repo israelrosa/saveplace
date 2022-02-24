@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import ButtonFab from 'components/ButtonFab';
 import QueueCard from 'components/QueueCard';
 import Switch from 'components/Switch';
@@ -10,6 +11,7 @@ import { Container, Content, Header, HeaderText } from './styles';
 const Queues: React.FC = () => {
   const [optionSelect, setOptionSelect] = useState('activated');
   const theme = useTheme();
+  const navigation = useNavigation();
   return (
     <Container>
       <StatusBar backgroundColor={theme.colors.primary} style="light" />
@@ -24,7 +26,7 @@ const Queues: React.FC = () => {
       <Content>
         <QueueCard title="Banco" />
       </Content>
-      <ButtonFab />
+      <ButtonFab onPress={() => navigation.navigate('QueueForm')} />
     </Container>
   );
 };

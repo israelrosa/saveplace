@@ -14,6 +14,7 @@ export default {
     darkestBlue: '#4935C6',
     darkBlue: '#5B41F9',
     grey: '#F5F5F5',
+    lightGrey: '#EDECEC',
     darkGrey: '#E3E1F2',
     button: '#FAF8F8',
   },

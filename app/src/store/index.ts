@@ -1,8 +1,35 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, CombinedState } from '@reduxjs/toolkit';
+import createSecureStore from 'redux-persist-expo-securestore';
+import {
+  persistReducer,
+  PersistConfig,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import rootReducers from './reducers';
 
+const storage = createSecureStore();
+
+const persistConfig: PersistConfig<CombinedState> = {
+  key: 'root',
+  storage,
+  whitelist: ['auth'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducers);
+
 export const store = configureStore({
-  reducer: rootReducers,
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

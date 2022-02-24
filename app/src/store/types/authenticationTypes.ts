@@ -12,10 +12,13 @@ export const types: { [id: string]: string } = {
   USER_REGISTER_SUCCESS: 'USER_REGISTER_SUCCESS',
   USER_REGISTER_FAILURE: 'USER_REGISTER_FAILURE',
 };
-
-export interface AuthenticationStore {
+interface Token {
   accessToken: string;
   refreshToken: string;
+  tokenType: string;
+}
+export interface AuthenticationStore {
+  token: Token;
   updateTokenTimerId: number;
   isLoading: boolean;
   isLoggedIn: boolean;

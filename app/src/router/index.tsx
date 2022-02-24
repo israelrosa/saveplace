@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Profile from 'screens/Profile';
 import QueueDetails from 'screens/QueueDetails';
 import Search from 'screens/Search';
@@ -10,12 +10,21 @@ import UilUserCircle from '@iconscout/react-native-unicons/icons/uil-user-circle
 import UilUsers from '@iconscout/react-native-unicons/icons/uil-users-alt';
 import Queues from 'screens/Queues';
 import { useAppSelector } from 'hooks/storeHook';
+import QueueForm from 'screens/QueueForm';
 import UilHome from '../icons/UilHome';
 import SignIn from '../screens/SignIn';
 import SignOn from '../screens/SignOn';
 import { Container } from './styles';
 
+const Stack = createNativeStackNavigator();
 const RoutesStack = createBottomTabNavigator();
+
+const QueueEstablishmentRoutes = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Queues" component={Queues} />
+    <Stack.Screen name="QueueForm" component={QueueForm} />
+  </Stack.Navigator>
+);
 
 const Routes = () => {
   const theme = useTheme();
@@ -47,8 +56,8 @@ const Routes = () => {
         }}
       />
       <RoutesStack.Screen
-        name="Queues"
-        component={Queues}
+        name="QueuesEstablishments"
+        component={QueueEstablishmentRoutes}
         options={{
           tabBarIcon: ({ color, focused }) => (
             <Container backgroundColor={focused && theme.colors.primary}>
@@ -82,22 +91,20 @@ const Routes = () => {
     </RoutesStack.Navigator>
   );
 };
-
-const Stack = createNativeStackNavigator();
-
 const Router = () => {
-  const login = useAppSelector((state) => state.auth);
-
-  useEffect(() => {
-    // console.log(login);
-  }, [login]);
+  const auth = useAppSelector((state) => state.auth);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignOn" component={SignOn} />
-        <Stack.Screen name="Routes" component={Routes} />
+        {auth.isLoggedIn ? (
+          <Stack.Screen name="Routes" component={Routes} />
+        ) : (
+          <>
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignOn" component={SignOn} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

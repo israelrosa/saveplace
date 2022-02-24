@@ -47,8 +47,7 @@ export default class UsersController {
 
     let authenticateResponse;
     if (refreshToken) {
-      const authenticateWithRefreshTokenService =
-        new AuthenticateWithRefreshTokenService();
+      const authenticateWithRefreshTokenService = new AuthenticateWithRefreshTokenService();
       authenticateResponse = await authenticateWithRefreshTokenService.exec(
         refreshToken,
       );

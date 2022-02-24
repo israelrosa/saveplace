@@ -16,7 +16,8 @@ export const HeaderText = styled.Text`
   margin-bottom: 24px;
 `;
 
-export const InputsContainer = styled.View`
+export const InputsContainer = styled.ScrollView`
+  flex: 1;
   padding: 0 24px;
 `;
 
@@ -24,7 +25,6 @@ export const ActionsContainer = styled.View`
   justify-content: flex-end;
   padding: 0 24px;
   margin: 34px 0;
-  flex: 1;
 `;
 
 export const TextButton = styled.Text`

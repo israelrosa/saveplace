@@ -1,14 +1,20 @@
 import React from 'react';
-import { ButtonProps } from 'react-native';
+import { RectButtonProps } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 
-interface CustomButtonProps extends ButtonProps {
+interface CustomButtonProps extends RectButtonProps {
   color: string;
   text: string;
   isLoading: boolean;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ text, color, onPress, isLoading }) => (
+const CustomButton: React.FC<CustomButtonProps> = ({
+  text,
+  color,
+  onPress,
+  isLoading,
+  ...rest
+}) => (
   <Button
     theme={{ roundness: 20 }}
     mode="contained"
@@ -17,6 +23,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ text, color, onPress, isLoa
     uppercase={false}
     contentStyle={{ height: 52 }}
     onPress={onPress}
+    {...rest}
   >
     {text}
   </Button>

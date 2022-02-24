@@ -99,10 +99,10 @@ const QueueDetails: React.FC = () => {
             </CardBox>
           </Card>
         </View>
+        <ActionsContainer>
+          <CustomButton color={theme.colors.primary} text="Sair da Fila" />
+        </ActionsContainer>
       </CardsContainer>
-      <ActionsContainer>
-        <CustomButton color={theme.colors.primary} text="Sair da Fila" />
-      </ActionsContainer>
     </Container>
   );
 };

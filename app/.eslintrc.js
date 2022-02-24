@@ -32,6 +32,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/style-prop-object': 'off',
     'arrow-parens': 'off',
+    'implicit-arrow-linebreak': 'off',
     'react/jsx-props-no-spreading': 'off',
     'object-curly-newline': 'off',
     'comma-dangle': 'off',

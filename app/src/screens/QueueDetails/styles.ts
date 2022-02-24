@@ -101,5 +101,5 @@ export const CardHero = styled.Text`
 `;
 
 export const ActionsContainer = styled.View`
-  padding: 0 24px 24px 24px;
+  padding-bottom: 24px;
 `;

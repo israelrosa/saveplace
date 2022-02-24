@@ -14,10 +14,13 @@ export const Container = styled.View`
   background-color: #ffffff;
 `;
 
+export const Icon = styled.View`
+  margin-right: 24px;
+`;
+
 export const Text = styled.Text`
   color: ${(props) => props.theme.colors.text.primary};
   font-size: ${(props) => props.theme.fonts.section.main.fontSize}px;
   font-family: ${(props) => props.theme.fonts.section.main.fontFamily};
-  margin-left: 24px;
   flex: 1;
 `;
