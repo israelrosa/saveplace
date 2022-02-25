@@ -18,7 +18,7 @@ const SignOn: React.FC = () => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const [userType, setUserType] = useState('client');
-  const [showNextSection, setShowNextSection] = useState(true);
+  const [showNextSection, setShowNextSection] = useState(false);
 
   const handleSubmit = async (data) => {
     if (showNextSection) {

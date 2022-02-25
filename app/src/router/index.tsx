@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Profile from 'screens/Profile';
 import QueueDetails from 'screens/QueueDetails';
 import Search from 'screens/Search';
@@ -9,8 +9,9 @@ import { useTheme } from 'styled-components';
 import UilUserCircle from '@iconscout/react-native-unicons/icons/uil-user-circle';
 import UilUsers from '@iconscout/react-native-unicons/icons/uil-users-alt';
 import Queues from 'screens/Queues';
-import { useAppSelector } from 'hooks/storeHook';
+import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
 import QueueForm from 'screens/QueueForm';
+import { getUserInfo } from 'store/actions/userActions';
 import UilHome from '../icons/UilHome';
 import SignIn from '../screens/SignIn';
 import SignOn from '../screens/SignOn';
@@ -92,7 +93,14 @@ const Routes = () => {
   );
 };
 const Router = () => {
-  const auth = useAppSelector((state) => state.auth);
+  const { auth } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (auth.isLoggedIn) {
+      dispatch(getUserInfo());
+    }
+  }, [auth]);
 
   return (
     <NavigationContainer>

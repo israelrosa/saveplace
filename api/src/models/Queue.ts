@@ -138,11 +138,7 @@ export default class Queue {
     if (!this.clients || this.clients.length === 0) {
       return this.currentCode;
     }
-    const result = this.clients
-      .sort((a, b) => {
-        return a.code - b.code;
-      })
-      .pop();
+    const result = this.clients.sort((a, b) => a.code - b.code).pop();
 
     const lastCode = result !== undefined ? result.code : this.currentCode;
 

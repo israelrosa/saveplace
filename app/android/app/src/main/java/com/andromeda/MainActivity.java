@@ -1,4 +1,4 @@
-package com.andromeda;
+package com.saveplace;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;

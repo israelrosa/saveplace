@@ -1,14 +1,15 @@
 {
   "env": {
+    "commonjs": true,
     "es6": true,
-    "es2021": true,
-    "node": true,
-    "jest": true
+    "node": true
   },
   "extends": [
     "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -16,18 +17,16 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json",
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+    "ecmaVersion": 2018
   },
   "plugins": [
     "@typescript-eslint",
-    "prettier",
-    "simple-import-sort"
+    "prettier"
   ],
   "rules": {
     "no-underscore-dangle": "error",
     "no-useless-constructor": "off",
+    "camelcase": "off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "@typescript-eslint/camelcase": "off",
@@ -47,11 +46,7 @@
   },
   "settings": {
     "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
+      "typescript": {}
     }
-  },
+  }
 }
-
-

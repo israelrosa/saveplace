@@ -2,16 +2,14 @@ import { AuthenticationStore, types } from 'store/types/authenticationTypes';
 import { createReducer } from '@reduxjs/toolkit';
 
 const initialState: AuthenticationStore = {
-  accessToken: '',
-  refreshToken: '',
+  token: undefined,
   updateTokenTimerId: 0,
   isLoading: false,
   isLoggedIn: false,
   error: undefined,
 };
 
-const authenticationReducers = createReducer(initialState, {
-  [types.AUTH_LOGIN]: (action) => action.payload,
+const authenticationReducer = createReducer(initialState, {
   [types.USER_REGISTER_REQUEST]: () => ({ isLoading: true }),
   [types.USER_REGISTER_SUCCESS]: (_, action) => action.payload,
   [types.USER_REGISTER_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
@@ -24,4 +22,4 @@ const authenticationReducers = createReducer(initialState, {
   [types.USER_LOGIN_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
 });
 
-export default authenticationReducers;
+export default authenticationReducer;

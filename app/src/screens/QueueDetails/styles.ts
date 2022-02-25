@@ -100,6 +100,4 @@ export const CardHero = styled.Text`
   font-family: ${(props) => props.theme.fonts.hero.fontFamily};
 `;
 
-export const ActionsContainer = styled.View`
-  padding-bottom: 24px;
-`;
+export const ActionsContainer = styled.View``;

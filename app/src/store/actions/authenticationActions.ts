@@ -57,7 +57,40 @@ export const login = (email, password) => {
 
     api
       .post('/token/', { email, password })
-      .then((user) => dispatch(success(user.data)))
+      .then((user) => {
+        const { accessToken, tokenType } = user.data;
+        const authorizationToken = `${tokenType} ${accessToken}`;
+        return dispatch(success({ ...user.data, authorizationToken }));
+      })
+      .catch((error) => dispatch(failure(error.toString())));
+  };
+};
+
+export const logout = () => {
+  function request() {
+    return { type: types.USER_LOGOUT_REQUEST };
+  }
+  function success(payload) {
+    return { type: types.USER_LOGOUT_SUCCESS, payload };
+  }
+  function failure(error) {
+    return { type: types.USER_LOGOUT_FAILURE, error };
+  }
+
+  return (dispatch, getState) => {
+    dispatch(request());
+
+    api
+      .post(
+        '/revoke/',
+        {},
+        {
+          headers: {
+            Authorization: getState().auth.token.refreshToken,
+          },
+        }
+      )
+      .then(() => dispatch(success()))
       .catch((error) => dispatch(failure(error.toString())));
   };
 };
