@@ -11,7 +11,7 @@ const initialState: AuthenticationStore = {
 
 const authenticationReducer = createReducer(initialState, {
   [types.USER_REGISTER_REQUEST]: () => ({ isLoading: true }),
-  [types.USER_REGISTER_SUCCESS]: (_, action) => action.payload,
+  [types.USER_REGISTER_SUCCESS]: () => ({ isLoading: false }),
   [types.USER_REGISTER_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
   [types.USER_LOGIN_REQUEST]: () => ({ isLoading: true, isLoggedIn: false }),
   [types.USER_LOGIN_SUCCESS]: (_, action) => ({

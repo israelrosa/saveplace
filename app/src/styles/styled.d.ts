@@ -54,6 +54,7 @@ declare module 'styled-components' {
         error: string,
       },
       border: string,
+      disabled: string,
       background: {
         main: string,
         lightBlue: string,

@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['plugin:react/recommended', 'prettier', 'plugin:prettier/recommended', 'airbnb'],
+  extends: ['plugin:react/recommended', 'airbnb'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -12,16 +12,8 @@ module.exports = {
     ecmaVersion: 13,
     sourceType: 'module',
   },
-  plugins: ['prettier', '@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        jsxBracketSameLine: false,
-        singleQuote: true,
-        printWidth: 100,
-      },
-    ],
     'react/function-component-definition': [
       1,
       {

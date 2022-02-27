@@ -24,10 +24,17 @@ const QueueEstablishmentRoutes = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Queues" component={Queues} />
     <Stack.Screen name="QueueForm" component={QueueForm} />
+    <Stack.Screen name="QueueDetailsEstablishment" component={QueueDetails} />
   </Stack.Navigator>
 );
 
 const Routes = () => {
+  const { user } = useAppSelector((state) => state);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   const theme = useTheme();
   return (
     <RoutesStack.Navigator
@@ -45,39 +52,44 @@ const Routes = () => {
         },
       }}
     >
-      <RoutesStack.Screen
-        name="Search"
-        component={Search}
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <Container backgroundColor={focused && theme.colors.primary}>
-              <UilHome color={color} size={24} />
-            </Container>
-          ),
-        }}
-      />
-      <RoutesStack.Screen
-        name="QueuesEstablishments"
-        component={QueueEstablishmentRoutes}
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <Container backgroundColor={focused && theme.colors.primary}>
-              <UilUsers color={color} size={24} />
-            </Container>
-          ),
-        }}
-      />
-      <RoutesStack.Screen
-        name="QueueDetails"
-        component={QueueDetails}
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <Container backgroundColor={focused && theme.colors.primary}>
-              <UilUsers color={color} size={24} />
-            </Container>
-          ),
-        }}
-      />
+      {user.data.type === 'establishment' ? (
+        <RoutesStack.Screen
+          name="QueuesEstablishments"
+          component={QueueEstablishmentRoutes}
+          options={{
+            tabBarIcon: ({ color, focused }) => (
+              <Container backgroundColor={focused && theme.colors.primary}>
+                <UilUsers color={color} size={24} />
+              </Container>
+            ),
+          }}
+        />
+      ) : (
+        <>
+          <RoutesStack.Screen
+            name="Search"
+            component={Search}
+            options={{
+              tabBarIcon: ({ color, focused }) => (
+                <Container backgroundColor={focused && theme.colors.primary}>
+                  <UilHome color={color} size={24} />
+                </Container>
+              ),
+            }}
+          />
+          <RoutesStack.Screen
+            name="QueueDetails"
+            component={QueueDetails}
+            options={{
+              tabBarIcon: ({ color, focused }) => (
+                <Container backgroundColor={focused && theme.colors.primary}>
+                  <UilUsers color={color} size={24} />
+                </Container>
+              ),
+            }}
+          />
+        </>
+      )}
       <RoutesStack.Screen
         name="Profile"
         component={Profile}
@@ -93,7 +105,7 @@ const Routes = () => {
   );
 };
 const Router = () => {
-  const { auth } = useAppSelector((state) => state);
+  const { auth, user } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -105,7 +117,7 @@ const Router = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {auth.isLoggedIn ? (
+        {auth.isLoggedIn && user?.data?.type ? (
           <Stack.Screen name="Routes" component={Routes} />
         ) : (
           <>

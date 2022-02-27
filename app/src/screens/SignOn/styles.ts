@@ -21,6 +21,11 @@ export const InputsContainer = styled.ScrollView`
   padding: 0 24px;
 `;
 
+export const InputGroup = styled.View`
+  flex-direction: row;
+  flex: 1;
+`;
+
 export const ActionsContainer = styled.View`
   justify-content: flex-end;
   padding: 0 24px;

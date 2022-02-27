@@ -40,7 +40,7 @@ export const getQueues = ({ search, tagId, limit, skip }: QueueQueries) => {
           Authorization: getState().auth.token.authorizationToken,
         },
       })
-      .then((user) => dispatch(success(user.data)))
+      .then((queues) => dispatch(success(queues.data)))
       .catch((error) => dispatch(failure(error.toString())));
   };
 };
@@ -69,7 +69,7 @@ export const getUserQueues = () => {
           },
         }
       )
-      .then((user) => dispatch(success(user.data)))
+      .then((queues) => dispatch(success(queues.data)))
       .catch((error) => dispatch(failure(error.toString())));
   };
 };
@@ -98,23 +98,23 @@ export const getQueue = (queueId: string) => {
           },
         }
       )
-      .then((user) => dispatch(success(user.data)))
+      .then((queue) => dispatch(success(queue.data)))
       .catch((error) => dispatch(failure(error.toString())));
   };
 };
 
-export const createQueue = ({ name, status, tagId }: CreateQueueParams) => {
-  function request() {
-    return { type: types.CREATE_QUEUE_REQUEST };
-  }
-  function success(payload) {
-    return { type: types.CREATE_QUEUE_SUCCESS, payload };
-  }
-  function failure(error) {
-    return { type: types.CREATE_QUEUE_FAILURE, error };
-  }
+export const createQueue = ({ name, status, tagId }: CreateQueueParams) =>
+  (dispatch, getState) => new Promise((resolve, reject) => {
+    function request() {
+      return { type: types.CREATE_QUEUE_REQUEST };
+    }
+    function success(payload) {
+      return { type: types.CREATE_QUEUE_SUCCESS, payload };
+    }
+    function failure(error) {
+      return { type: types.CREATE_QUEUE_FAILURE, error };
+    }
 
-  return (dispatch, getState) => {
     dispatch(request());
 
     api
@@ -127,10 +127,15 @@ export const createQueue = ({ name, status, tagId }: CreateQueueParams) => {
           },
         }
       )
-      .then((user) => dispatch(success(user.data)))
-      .catch((error) => dispatch(failure(error.toString())));
-  };
-};
+      .then((queue) => {
+        resolve(queue.data.id);
+        return dispatch(success(queue.data));
+      })
+      .catch((error) => {
+        reject(error);
+        return dispatch(failure(error.toString()));
+      });
+  });
 
 export const deleteQueue = (queueId: string) => {
   function request() {

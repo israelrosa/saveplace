@@ -8,6 +8,7 @@ export default {
     error: '#C80000',
   },
   border: '#D7D7D7',
+  disabled: '#D7D7D7',
   background: {
     main: '#F6F7FA',
     lightBlue: '#F5F4F9',

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from 'components/CustomButton';
-import { TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity } from 'react-native';
 import SignInImage from 'assets/SignInImage';
 import { useTheme } from 'styled-components';
 import { Form } from '@unform/mobile';
@@ -28,6 +28,20 @@ const SignIn: React.FC = () => {
   const dispatch = useAppDispatch();
   const { auth } = useAppSelector((state) => state);
   const [isLoading, setIsLoading] = useState(false);
+  const [keyboardIsOpen, setKeyboardIsOpen] = React.useState(false);
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardIsOpen(true);
+    });
+    Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardIsOpen(false);
+    });
+    return () => {
+      Keyboard.removeAllListeners('keyboardDidShow');
+      Keyboard.removeAllListeners('keyboardDidHide');
+    };
+  }, [Keyboard]);
 
   useEffect(() => {
     setIsLoading(auth?.isLoading);
@@ -63,9 +77,11 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <StatusBar style="auto" />
-      <HeaderImage>
-        <SignInImage />
-      </HeaderImage>
+      {!keyboardIsOpen && (
+        <HeaderImage>
+          <SignInImage />
+        </HeaderImage>
+      )}
       <HeaderText>Entrar</HeaderText>
       <Form ref={formRef} onSubmit={handleSubmit}>
         <InputsContainer>

@@ -15,12 +15,15 @@ export default class UsersController {
       phone,
       password,
       type,
-      zipCode,
+      cep,
       state,
       street,
       neighborhood,
       city,
       establishmentNumber,
+      complement,
+      longitude,
+      latitude,
     } = request.body;
 
     const registerUserService = new RegisterUserService();
@@ -31,12 +34,15 @@ export default class UsersController {
       phone,
       password,
       type,
-      zipCode,
+      cep,
       state,
       street,
       neighborhood,
       city,
       establishmentNumber,
+      complement,
+      longitude,
+      latitude,
     });
 
     return response.status(200).json(instanceToPlain(user));
@@ -85,7 +91,7 @@ export default class UsersController {
     const { id } = request.user;
     const {
       name,
-      zipCode,
+      cep,
       state,
       street,
       neighborhood,
@@ -105,7 +111,7 @@ export default class UsersController {
       neighborhood,
       state,
       street,
-      zipCode,
+      cep,
     });
 
     return response.status(200).json(instanceToPlain(user));

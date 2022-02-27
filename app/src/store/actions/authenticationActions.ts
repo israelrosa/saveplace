@@ -16,30 +16,30 @@ interface RegisterProps {
   establishmentNumber?: string;
 }
 
-export const register = (data: RegisterProps) => {
-  function request() {
-    return { type: types.USER_REGISTER_REQUEST };
-  }
-  function success() {
-    return { type: types.USER_REGISTER_SUCCESS };
-  }
-  function failure(error: AxiosError) {
-    return { type: types.USER_REGISTER_FAILURE, error };
-  }
-
-  return (dispatch) => {
+export const register = (data: RegisterProps) => (dispatch) =>
+  new Promise((resolve, reject) => {
+    function request() {
+      return { type: types.USER_REGISTER_REQUEST };
+    }
+    function success() {
+      return { type: types.USER_REGISTER_SUCCESS };
+    }
+    function failure(error: AxiosError) {
+      return { type: types.USER_REGISTER_FAILURE, error };
+    }
     dispatch(request());
 
     api
       .post('/users/', data)
       .then(() => {
         dispatch(success());
+        resolve();
       })
       .catch((error) => {
         dispatch(failure(error.toString()));
+        reject();
       });
-  };
-};
+  });
 
 export const login = (email, password) => {
   function request() {

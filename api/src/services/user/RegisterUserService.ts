@@ -9,12 +9,15 @@ interface RegisterUserData {
   phone: string;
   password: string;
   type: string;
-  zipCode?: string;
+  cep?: string;
   state?: string;
   street?: string;
   neighborhood?: string;
   city?: string;
   establishmentNumber?: string;
+  complement?: string;
+  longitude?: string;
+  latitude?: string;
 }
 
 export default class RegisterUserService {
@@ -25,22 +28,17 @@ export default class RegisterUserService {
   }
 
   async exec(data: RegisterUserData): Promise<User> {
+    console.log(data);
     const validTypes = ['client', 'establishment'];
     if (!validTypes.includes(data.type)) {
       throw new ErrorHandler(ERROR.INVALID_USER_TYPE);
     }
     if (data.type === 'establishment') {
-      const {
-        zipCode,
-        state,
-        street,
-        neighborhood,
-        city,
-        establishmentNumber,
-      } = data;
+      const { cep, state, street, neighborhood, city, establishmentNumber } =
+        data;
 
       if (
-        !zipCode ||
+        !cep ||
         !state ||
         !street ||
         !neighborhood ||

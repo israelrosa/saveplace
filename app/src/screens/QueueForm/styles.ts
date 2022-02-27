@@ -42,4 +42,14 @@ export const ActionsContainer = styled.View`
   flex: 1;
   padding: 0 24px 24px 24px;
   justify-content: flex-end;
+  z-index: 0;
+`;
+
+export const ModalContainer = styled.View`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  bottom: 0;
+  justify-content: flex-end;
 `;

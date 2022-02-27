@@ -44,7 +44,7 @@ export default class User {
   type: string;
 
   @Column({ nullable: true })
-  zipCode: string;
+  cep: string;
 
   @Column({ nullable: true })
   state: string;
@@ -60,6 +60,15 @@ export default class User {
 
   @Column({ nullable: true })
   establishmentNumber: string;
+
+  @Column({ nullable: true })
+  complement: string;
+
+  @Column({ nullable: true })
+  longitude: string;
+
+  @Column({ nullable: true })
+  latitude: string;
 
   @CreateDateColumn()
   createdAt: Date;

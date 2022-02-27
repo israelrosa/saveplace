@@ -25,7 +25,15 @@ const Input: React.FC<InputProps> = ({ name, onChangeText, isPassword, ...rest }
   const inputRef = useRef(null);
   const [secure, setSecure] = useState(isPassword);
 
-  const { fieldName, registerField, error } = useField(name);
+  const { fieldName, registerField, defaultValue, error } = useField(name);
+
+  useEffect(() => {
+    inputRef.current.value = defaultValue;
+  }, [defaultValue]);
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.value = defaultValue;
+  }, [defaultValue]);
 
   useEffect(() => {
     registerField({
@@ -68,10 +76,12 @@ const Input: React.FC<InputProps> = ({ name, onChangeText, isPassword, ...rest }
             placeholder: theme.colors.text.neutral,
             primary: theme.colors.primary,
             text: theme.colors.text.primary,
+            disabled: theme.colors.disabled,
           },
         }}
         error={error}
         secureTextEntry={secure}
+        defaultValue={defaultValue}
         onChangeText={handleChangeText}
         autoComplete={undefined}
         {...rest}

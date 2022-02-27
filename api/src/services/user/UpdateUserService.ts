@@ -7,7 +7,7 @@ interface UserData {
   id: string;
   name?: string;
   profileImage?: string;
-  zipCode?: string;
+  cep?: string;
   state?: string;
   street?: string;
   neighborhood?: string;
@@ -33,7 +33,7 @@ export default class UpdateUserService {
       this.entityManager.update(User, user, {
         name: data.name || user.name,
         profileImage: data.profileImage || user.profileImage,
-        zipCode: data.zipCode || user.zipCode,
+        cep: data.cep || user.cep,
         state: data.state || user.state,
         street: data.street || user.street,
         neighborhood: data.neighborhood || user.neighborhood,

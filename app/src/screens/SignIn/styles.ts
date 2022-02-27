@@ -6,6 +6,7 @@ export const Container = styled.View`
   width: 100%;
   background-color: ${(props) => props.theme.colors.background.main};
   padding-top: ${StatusBar.currentHeight}px;
+  justify-content: flex-end;
 `;
 
 export const HeaderImage = styled.View`
