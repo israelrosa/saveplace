@@ -10,9 +10,10 @@ import Option from 'components/Option';
 import CustomButton from 'components/CustomButton';
 import SelectInput from 'components/SelectInput';
 import * as Yup from 'yup';
-import { useAppDispatch } from 'hooks/storeHook';
+import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
 import { createQueue } from 'store/actions/queueActions';
 import Modal from 'components/Modal';
+import { getTags } from 'store/actions/tagActions';
 import {
   ActionsContainer,
   Container,
@@ -28,8 +29,10 @@ const QueueForm: React.FC = () => {
   const theme = useTheme();
   const formRef = useRef(null);
   const navigation = useNavigation();
+  const { tag } = useAppSelector(state => state);
   const dispatch = useAppDispatch();
   const [status, setStatus] = useState(true);
+  const [selectedTag, setSelectedTag] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
@@ -43,15 +46,15 @@ const QueueForm: React.FC = () => {
       await schema.validate(data, {
         abortEarly: false,
       });
-      console.log(data);
 
       // Validation passed
       setIsLoading(true);
       dispatch(createQueue({
         name: data.queueName,
+        tagId: selectedTag.id,
         status: status ? 'active' : 'disabled'
       })).then((id) => {
-        console.log(id);
+        navigation.navigate('EstablishmentQueueDetails', { id });
         setIsLoading(false);
       }).catch((err) => {
         console.log(err);
@@ -65,6 +68,16 @@ const QueueForm: React.FC = () => {
         formRef.current.setErrors(validationErrors);
       }
     }
+  };
+
+  const handleSelectTags = () => {
+    dispatch(getTags());
+    setOpenModal(true);
+  };
+
+  const handleSelectTag = (item) => {
+    setSelectedTag(item);
+    setOpenModal(false);
   };
 
   return (
@@ -81,7 +94,7 @@ const QueueForm: React.FC = () => {
           <Section>Detalhes</Section>
           <Input label="Nome da fila" name="queueName" />
           <Section style={{ marginTop: 24 }}>Tag</Section>
-          <SelectInput placeholder="Selecione a tag" onPress={() => setOpenModal(true)} />
+          <SelectInput value={selectedTag?.name || ''} placeholder="Selecione a tag" onPress={handleSelectTags} />
           <Section style={{ marginTop: 24 }}>Status</Section>
           <Option hideArrowRight text="Aberto" iconRight={<Switch value={status} onValueChange={(value) => setStatus(value)} />} />
         </Form>
@@ -96,7 +109,7 @@ const QueueForm: React.FC = () => {
       </ActionsContainer>
       {openModal && (
         <ModalContainer>
-          <Modal title="Tags" onClose={() => setOpenModal(false)} />
+          <Modal onSelect={handleSelectTag} items={tag.data} title="Tags" onClose={() => setOpenModal(false)} />
         </ModalContainer>
       )}
     </Container>

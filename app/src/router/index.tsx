@@ -24,16 +24,19 @@ const QueueEstablishmentRoutes = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Queues" component={Queues} />
     <Stack.Screen name="QueueForm" component={QueueForm} />
-    <Stack.Screen name="QueueDetailsEstablishment" component={QueueDetails} />
+    <Stack.Screen name="EstablishmentQueueDetails" component={QueueDetails} />
+  </Stack.Navigator>
+);
+
+const QueueSearchRoutes = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Search" component={Search} />
+    <Stack.Screen name="SearchQueueDetails" component={QueueDetails} />
   </Stack.Navigator>
 );
 
 const Routes = () => {
   const { user } = useAppSelector((state) => state);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const theme = useTheme();
   return (
@@ -54,7 +57,7 @@ const Routes = () => {
     >
       {user.data.type === 'establishment' ? (
         <RoutesStack.Screen
-          name="QueuesEstablishments"
+          name="EstablishmentsQueues"
           component={QueueEstablishmentRoutes}
           options={{
             tabBarIcon: ({ color, focused }) => (
@@ -67,8 +70,8 @@ const Routes = () => {
       ) : (
         <>
           <RoutesStack.Screen
-            name="Search"
-            component={Search}
+            name="SearchQueue"
+            component={QueueSearchRoutes}
             options={{
               tabBarIcon: ({ color, focused }) => (
                 <Container backgroundColor={focused && theme.colors.primary}>

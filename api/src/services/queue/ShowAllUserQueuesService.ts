@@ -8,9 +8,9 @@ export default class ShowAllUserQueuesService {
     this.entityManager = getManager();
   }
 
-  async exec(userId: string): Promise<Queue[]> {
+  async exec(userId: string, status: string): Promise<Queue[]> {
     const queues = await this.entityManager.find(Queue, {
-      where: { userId },
+      where: { userId, status },
       relations: ['clients'],
     });
 

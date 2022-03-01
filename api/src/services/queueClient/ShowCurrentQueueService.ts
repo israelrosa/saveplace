@@ -14,6 +14,7 @@ export default class ShowCurrentQueueService {
     const currentQueue = await this.entityManager
       .getRepository(QueueClient)
       .createQueryBuilder('client')
+      .leftJoinAndSelect('client.queue', 'queue', 'queue.id = client.queueId')
       .andWhere(
         'client.status = :firstStatus or client.status = :secondStatus',
         {

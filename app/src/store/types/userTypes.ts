@@ -6,8 +6,9 @@ export const types: { [id: string]: string } = {
   GET_USER_FAILURE: 'GET_USER_FAILURE',
 };
 
-interface User {
+export interface User {
   name: string;
+  type: string;
 }
 
 export interface UserStore {

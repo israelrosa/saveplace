@@ -20,6 +20,14 @@ const authenticationReducer = createReducer(initialState, {
     token: action.payload,
   }),
   [types.USER_LOGIN_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
+  [types.USER_LOGOUT_REQUEST]: (store) => ({ isLoading: true, ...store }),
+  [types.USER_LOGOUT_SUCCESS]: () =>
+    ({
+      isLoggedIn: false,
+      isLoading: false,
+      token: undefined,
+    }),
+  [types.USER_LOGOUT_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
 });
 
 export default authenticationReducer;

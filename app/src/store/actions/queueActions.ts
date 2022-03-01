@@ -45,7 +45,7 @@ export const getQueues = ({ search, tagId, limit, skip }: QueueQueries) => {
   };
 };
 
-export const getUserQueues = () => {
+export const getUserQueues = (status) => {
   function request() {
     return { type: types.GET_USER_QUEUES_REQUEST };
   }
@@ -62,8 +62,10 @@ export const getUserQueues = () => {
     api
       .get(
         '/users/queues/',
-        {},
         {
+          params: {
+            status
+          },
           headers: {
             Authorization: getState().auth.token.authorizationToken,
           },
@@ -91,7 +93,34 @@ export const getQueue = (queueId: string) => {
     api
       .get(
         `/queues/${queueId}`,
-        {},
+        {
+          headers: {
+            Authorization: getState().auth.token.authorizationToken,
+          },
+        }
+      )
+      .then((queue) => dispatch(success(queue.data)))
+      .catch((error) => dispatch(failure(error.toString())));
+  };
+};
+
+export const getCurrentQueue = () => {
+  function request() {
+    return { type: types.GET_CURRENT_QUEUE_REQUEST };
+  }
+  function success(payload) {
+    return { type: types.GET_CURRENT_QUEUE_SUCCESS, payload };
+  }
+  function failure(error) {
+    return { type: types.GET_CURRENT_QUEUE_FAILURE, error };
+  }
+
+  return (dispatch, getState) => {
+    dispatch(request());
+
+    api
+      .get(
+        '/clients/',
         {
           headers: {
             Authorization: getState().auth.token.authorizationToken,
@@ -146,6 +175,35 @@ export const deleteQueue = (queueId: string) => {
   }
   function failure(error) {
     return { type: types.DELETE_QUEUE_FAILURE, error };
+  }
+
+  return (dispatch, getState) => {
+    dispatch(request());
+
+    api
+      .delete(
+        `/queues/${queueId}`,
+        {},
+        {
+          headers: {
+            Authorization: getState().auth.token.authorizationToken,
+          },
+        }
+      )
+      .then(() => dispatch(success()))
+      .catch((error) => dispatch(failure(error.toString())));
+  };
+};
+
+export const callNextClient = (queueId: string) => {
+  function request() {
+    return { type: types.CALL_NEXT_CLIENT_REQUEST };
+  }
+  function success(payload) {
+    return { type: types.CALL_NEXT_CLIENT_SUCCESS, payload };
+  }
+  function failure(error) {
+    return { type: types.CALL_NEXT_CLIENT_FAILURE, error };
   }
 
   return (dispatch, getState) => {

@@ -14,7 +14,7 @@ export default class ShowQueueService {
     let queue;
     try {
       queue = await this.entityManager.findOne(Queue, queueId, {
-        relations: ['clients'],
+        relations: ['clients', 'user'],
       });
 
       if (!queue) {
@@ -23,6 +23,7 @@ export default class ShowQueueService {
     } catch (error) {
       throw new ErrorHandler(ERROR.INVALID_RESOURCE);
     }
+    console.log(queue);
     return queue;
   }
 }

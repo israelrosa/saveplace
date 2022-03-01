@@ -4,6 +4,7 @@ import CreateRefreshToken from 'services/refreshToken/CreateRefreshToken';
 import AuthenticateUserService from 'services/user/AuthenticateUserService';
 import AuthenticateWithRefreshTokenService from 'services/user/AuthenticationWithRefreshTokenService';
 import RegisterUserService from 'services/user/RegisterUserService';
+import RevokeTokenService from 'services/user/RevokeTokenService';
 import ShowUserInfoService from 'services/user/ShowUserInfoService';
 import UpdateUserService from 'services/user/UpdateUserService';
 
@@ -75,6 +76,17 @@ export default class UsersController {
     return response
       .status(200)
       .json({ ...session, refreshToken: refreshTokenResponse });
+  }
+
+  async revoke(request: Request, response: Response): Promise<Response> {
+    const { id } = request.user;
+    const { refreshTokenId } = request.body;
+
+    const revokeTokenService = new RevokeTokenService();
+
+    await revokeTokenService.exec(id, refreshTokenId);
+
+    return response.status(200).json();
   }
 
   async get(request: Request, response: Response): Promise<Response> {

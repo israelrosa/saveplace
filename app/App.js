@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import Router from 'router';
 import { ThemeProvider } from 'styled-components';
@@ -9,7 +8,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import * as openSans from '@expo-google-fonts/open-sans';
 import light from './src/styles/themes/light';
 import fonts from './src/styles/themes/fonts';
-import { store } from './src/store';
+import { store, persistor } from './src/store';
 
 const App = () => {
   const theme = {
@@ -28,8 +27,6 @@ const App = () => {
     OpenSans_800ExtraBold: openSans.OpenSans_800ExtraBold,
     OpenSans_800ExtraBold_Italic: openSans.OpenSans_800ExtraBold_Italic,
   });
-
-  const persistor = persistStore(store);
 
   return (
     <Provider store={store}>

@@ -16,6 +16,14 @@ export const Content = styled.View`
   padding: 12px;
 `;
 
+export const ContentSide = styled.View`
+  flex: 1;
+`;
+
+export const ContentTag = styled.View`
+  flex-direction: row;
+`;
+
 export const ContentImage = styled.Image`
   border-radius: 4px;
   height: 96px;

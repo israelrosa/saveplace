@@ -5,7 +5,7 @@ interface ContainerProps {
   selected: boolean;
 }
 
-export const Container = styled.View<ContainerProps>`
+export const Container = styled.TouchableOpacity<ContainerProps>`
   padding: 0 24px;
   margin-right: 4px;
   height: 40px;

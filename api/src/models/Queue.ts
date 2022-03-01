@@ -62,6 +62,11 @@ export default class Queue {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  @Expose({ name: 'numberOfPeople' })
+  numberOfPeople() {
+    return this.clients.filter(client => client.status === 'waiting').length;
+  }
+
   @Expose({ name: 'nextClient' })
   nextClient() {
     let nextCode = this.currentCode + 1;
@@ -85,7 +90,7 @@ export default class Queue {
       return undefined;
     }
 
-    return nextClient.id;
+    return nextClient;
   }
 
   @Expose({ name: 'previousClient' })
@@ -99,7 +104,7 @@ export default class Queue {
       return undefined;
     }
 
-    return previousClient.id;
+    return previousClient;
   }
 
   @Expose({ name: 'waitingTimeMinutes' })

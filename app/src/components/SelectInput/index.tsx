@@ -6,13 +6,14 @@ import { Container, Icon, TextInput } from './styles';
 interface SelectInputInterface {
   placeholder: string;
   onPress: () => void;
+  value: string;
 }
 
-const SelectInput: React.FC<SelectInputInterface> = ({ placeholder, onPress }) => {
+const SelectInput: React.FC<SelectInputInterface> = ({ placeholder, onPress, value }) => {
   const theme = useTheme();
   return (
     <Container onPress={onPress}>
-      <TextInput placeholder={placeholder} editable={false} />
+      <TextInput value={value} placeholder={placeholder} editable={false} />
       <Icon>
         <UilAngle size={24} color={theme.colors.text.neutral} />
       </Icon>

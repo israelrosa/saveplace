@@ -48,7 +48,7 @@ export default class QueueClient {
   @JoinColumn({ name: 'queueId' })
   queue: Queue;
 
-  @ManyToOne(() => User, user => user.queueClients)
+  @ManyToOne(() => User, user => user.queueClients, { eager: true })
   @JoinColumn({ name: 'userId' })
   user: User;
 }

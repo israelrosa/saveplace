@@ -25,10 +25,8 @@ export const HeaderText = styled.Text`
 
 export const FiltersContainer = styled.ScrollView`
   flex-direction: row;
-  margin-top: 26px;
-  max-height: 56px;
-  padding: 0 24px;
-  padding-top: 16px;
+  margin-top: 42px;
+  height: 44px;
 `;
 
 export const Content = styled.ScrollView`

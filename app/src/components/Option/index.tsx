@@ -9,12 +9,13 @@ interface OptionProps {
   iconRight: React.ReactNode;
   text: string;
   hideArrowRight: boolean;
+  onPress: () => void;
 }
 
-const Option: React.FC<OptionProps> = ({ text, iconLeft, iconRight, hideArrowRight }) => {
+const Option: React.FC<OptionProps> = ({ text, iconLeft, iconRight, hideArrowRight, onPress }) => {
   const theme = useTheme();
   return (
-    <Container>
+    <Container onPress={onPress}>
       {iconLeft && <Icon>{iconLeft}</Icon>}
       <Text>{text}</Text>
       {!hideArrowRight && <UilAngleRight color={theme.colors.text.neutral} size={24} />}

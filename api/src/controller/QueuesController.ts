@@ -76,9 +76,10 @@ export default class QueuesController {
     response: Response,
   ): Promise<Response> {
     const { id } = request.user;
+    const { status } = request.query;
 
     const showAllUserQueuesService = new ShowAllUserQueuesService();
-    const queues = await showAllUserQueuesService.exec(id);
+    const queues = await showAllUserQueuesService.exec(id, status);
 
     return response.status(200).json(instanceToPlain(queues));
   }

@@ -70,8 +70,8 @@ export const logout = () => {
   function request() {
     return { type: types.USER_LOGOUT_REQUEST };
   }
-  function success(payload) {
-    return { type: types.USER_LOGOUT_SUCCESS, payload };
+  function success() {
+    return { type: types.USER_LOGOUT_SUCCESS };
   }
   function failure(error) {
     return { type: types.USER_LOGOUT_FAILURE, error };
@@ -83,10 +83,10 @@ export const logout = () => {
     api
       .post(
         '/revoke/',
-        {},
+        { refreshTokenId: getState().auth.token.refreshToken },
         {
           headers: {
-            Authorization: getState().auth.token.refreshToken,
+            Authorization: getState().auth.token.authorizationToken,
           },
         }
       )

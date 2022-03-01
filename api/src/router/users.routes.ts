@@ -15,7 +15,7 @@ usersRouter
   .put(ensureAuthentication(), usersController.update);
 
 usersRouter.get(
-  '/queues',
+  '/queues/',
   ensureAuthentication(UserType.ESTABLISHMENT),
   queuesController.getAllUserQueues,
 );

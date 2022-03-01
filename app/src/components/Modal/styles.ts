@@ -31,28 +31,27 @@ export const ModalTitle = styled.Text`
   font-family: ${(props) => props.theme.fonts.subTitle.fontFamily};
   font-size: ${(props) => props.theme.fonts.subTitle.fontSize}px;
   color: ${(props) => props.theme.colors.text.primary};
-  `;
+`;
 
 export const ModalContent = styled.ScrollView`
-  padding-left: 24px;
-  padding-right: 24px;
-  `;
+  margin: 0 24px;
+`;
 
 export const ButtonClose = styled.TouchableOpacity`
   opacity: 0.3;
-  `;
+`;
 
-export const ItemContent = styled.View`
+export const ItemContent = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   border-bottom-width: 1px;
   border-bottom-color: ${(props) => props.theme.colors.border};
-  `;
+`;
 
 export const ItemName = styled.Text`
-  font-family: ${(props) => props.theme.fonts.subTitle.fontFamily};
-  font-size: ${(props) => props.theme.fonts.subTitle.fontSize}px;
+  font-family: ${(props) => props.theme.fonts.spanBold.fontFamily};
+  font-size: ${(props) => props.theme.fonts.spanBold.fontSize}px;
   color: ${(props) => props.theme.colors.text.primary};
 `;

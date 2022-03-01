@@ -2,6 +2,7 @@ import { configureStore, CombinedState } from '@reduxjs/toolkit';
 import createSecureStore from 'redux-persist-expo-securestore';
 import {
   persistReducer,
+  persistStore,
   PersistConfig,
   FLUSH,
   REHYDRATE,
@@ -28,9 +29,12 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        serializableCheck: { ignoredPaths: ['queue.queueDetail'] }
       },
     }),
 });
+
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

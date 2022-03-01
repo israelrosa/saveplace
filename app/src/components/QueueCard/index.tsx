@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import UilAngleRight from '@iconscout/react-native-unicons/icons/uil-angle-right-b';
 import UilUsersAlt from '@iconscout/react-native-unicons/icons/uil-users-alt';
 import UilClock from '@iconscout/react-native-unicons/icons/uil-clock';
 
 import { useTheme } from 'styled-components';
+import { ViewProps } from 'react-native';
+import ChipTag from 'components/ChipTag';
+import api from 'services/api';
 import {
   Container,
   Content,
   ContentImage,
   ContentInfo,
+  ContentSide,
+  ContentTag,
   Footer,
   FooterInfo,
   FooterText,
@@ -16,11 +21,13 @@ import {
   Title,
 } from './styles';
 
-interface QueueCardProps {
+interface QueueCardProps extends ViewProps {
   title: string;
   image: string;
   numberOfPeople: number;
   waitingTimeMinutes: number;
+  tagId: string;
+  onPress: () => void;
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({
@@ -28,16 +35,36 @@ const QueueCard: React.FC<QueueCardProps> = ({
   image,
   numberOfPeople,
   waitingTimeMinutes,
+  tagId,
+  onPress,
+  ...rest
 }) => {
   const theme = useTheme();
+  const [tag, setTag] = useState('');
+
+  useEffect(() => {
+    api.get(`/tags/${tagId}`).then(({ data }) => {
+      console.log(data.name);
+      setTag(data.name);
+    }).catch(err => {
+      console.log(err);
+    });
+  }, [tag]);
+
   return (
-    <Container>
+    <Container onPress={onPress} {...rest}>
       <Content>
         {image && <ContentImage source={{ uri: image }} />}
-        <ContentInfo>
-          <Title>{title}</Title>
-          <UilAngleRight size={24} color={theme.colors.text.neutral} />
-        </ContentInfo>
+        <ContentSide>
+
+          <ContentInfo>
+            <Title>{title}</Title>
+            <UilAngleRight size={24} color={theme.colors.text.neutral} />
+          </ContentInfo>
+          <ContentTag>
+            <ChipTag text={tag} />
+          </ContentTag>
+        </ContentSide>
       </Content>
       <Footer>
         <UilUsersAlt color={theme.colors.text.neutral} size={32} />

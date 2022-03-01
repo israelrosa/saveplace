@@ -10,10 +10,10 @@ interface SwitchProps extends ViewProps {
 
 const Switch: React.FC<SwitchProps> = ({ optionSelected, onSelect, ...rest }) => (
   <Container {...rest}>
-    <Option onPress={() => onSelect('activated')} isSelected={optionSelected === 'activated'}>
+    <Option onPress={() => onSelect('active')} isSelected={optionSelected === 'active'}>
       <OptionText>Ativadas</OptionText>
     </Option>
-    <Option onPress={() => onSelect('desactivated')} isSelected={optionSelected === 'desactivated'}>
+    <Option onPress={() => onSelect('disabled')} isSelected={optionSelected === 'disabled'}>
       <OptionText>Desativadas</OptionText>
     </Option>
   </Container>

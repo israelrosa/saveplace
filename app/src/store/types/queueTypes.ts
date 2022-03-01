@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { User } from './userTypes';
 
 export const types: { [id: string]: string } = {
   GET_QUEUES_REQUEST: 'GET_QUEUES_REQUEST',
@@ -13,6 +14,10 @@ export const types: { [id: string]: string } = {
   GET_QUEUE_SUCCESS: 'GET_QUEUE_SUCCESS',
   GET_QUEUE_FAILURE: 'GET_QUEUE_FAILURE',
 
+  GET_CURRENT_QUEUE_REQUEST: 'GET_CURRENT_QUEUE_REQUEST',
+  GET_CURRENT_QUEUE_SUCCESS: 'GET_CURRENT_QUEUE_SUCCESS',
+  GET_CURRENT_QUEUE_FAILURE: 'GET_CURRENT_QUEUE_FAILURE',
+
   CREATE_QUEUE_REQUEST: 'CREATE_QUEUE_REQUEST',
   CREATE_QUEUE_SUCCESS: 'CREATE_QUEUE_SUCCESS',
   CREATE_QUEUE_FAILURE: 'CREATE_QUEUE_FAILURE',
@@ -23,6 +28,7 @@ export const types: { [id: string]: string } = {
 };
 
 interface Queue {
+  id: string;
   name: string;
   currentCode: number;
   status: string;
@@ -33,9 +39,21 @@ interface Queue {
   nextClient: string;
   previousClient: string;
   waitingTimeMinutes: string;
+  user: User
+}
+
+interface QueueClient {
+  id: string;
+  code: number;
+  status: string;
+  queueId: string;
+  userId: string;
+  attendedOn: Date;
+  queue: Queue;
 }
 
 export interface UserStore {
+  currentQueue: QueueClient;
   queueDetail: Queue;
   userQueues: Queue[];
   publicQueues: Queue[];

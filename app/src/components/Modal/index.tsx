@@ -1,19 +1,24 @@
 import React from 'react';
 import UilCloseIcon from '@iconscout/react-native-unicons/icons/uil-times';
 import { useTheme } from 'styled-components';
-import { ButtonClose, Container, ItemContent, ItemName, ModalContainer, ModalHeader, ModalTitle } from './styles';
+import { ButtonClose, Container, ItemContent, ItemName, ModalContainer, ModalContent, ModalHeader, ModalTitle } from './styles';
 
-interface ModalProps {
-  onClose: () => boolean;
-  title: string;
-  items: {
-    id: string;
-    name: string;
-  }[]
+interface Item {
+  id: string;
+  name: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose, title, items }) => {
+interface ModalProps {
+  onClose: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onSelect: (item: Item) => void;
+  title: string;
+  items: Item[];
+}
+
+const Modal: React.FC<ModalProps> = ({ onClose, onSelect, title, items }) => {
   const theme = useTheme();
+
   return (
     <Container>
       <ModalContainer>
@@ -23,13 +28,13 @@ const Modal: React.FC<ModalProps> = ({ onClose, title, items }) => {
             <UilCloseIcon fill={theme.colors.text.primary} />
           </ButtonClose>
         </ModalHeader>
-        <ModalContainer>
+        <ModalContent>
           {items && items.map((item) => (
-            <ItemContent>
+            <ItemContent onPress={() => onSelect(item)} key={item.name}>
               <ItemName>{item.name}</ItemName>
             </ItemContent>
           ))}
-        </ModalContainer>
+        </ModalContent>
       </ModalContainer>
     </Container>
   );
