@@ -15,6 +15,19 @@ export const Header = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  padding: 0 24px;
+`;
+
+export const HeaderAction = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const HeaderTitleContent = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const HeaderImage = styled.Image`
@@ -48,9 +61,15 @@ export const SubHeaderText = styled.Text`
   font-family: ${(props) => props.theme.fonts.spanBold.fontFamily};
 `;
 
-export const CardsContainer = styled.ScrollView`
+export const ContentContainer = styled.View`
+  width: 100%;
   flex: 1;
-  padding: 24px;
+  padding: 0 24px;
+`;
+
+export const CardsContainer = styled.ScrollView`
+  height: 100%;
+  width: 100%;
 `;
 
 export const Card = styled.View`

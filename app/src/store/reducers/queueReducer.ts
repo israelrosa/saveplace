@@ -2,7 +2,10 @@ import { QueueStore, types } from 'store/types/queueTypes';
 import { createReducer } from '@reduxjs/toolkit';
 
 const initialState: QueueStore = {
-  data: undefined,
+  currentQueue: undefined,
+  queueDetail: undefined,
+  userQueues: [],
+  publicQueues: [],
   isLoading: false,
   error: undefined,
 };
@@ -20,11 +23,11 @@ const queueReducer = createReducer(initialState, {
     userQueues: action.payload,
   }),
   [types.GET_USER_QUEUES_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
-  [types.GET_QUEUE_REQUEST]: (store) => ({ isLoading: true, ...store }),
+  [types.GET_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
   [types.GET_QUEUE_SUCCESS]: (store, action) => ({
+    ...store,
     isLoading: false,
     queueDetail: action.payload,
-    ...store
   }),
   [types.GET_QUEUE_FAILURE]: (store, action) => ({
     isLoading: false,
@@ -32,28 +35,81 @@ const queueReducer = createReducer(initialState, {
     queueDetail: undefined,
     ...store
   }),
-  [types.GET_CURRENT_QUEUE_REQUEST]: (store) => ({ isLoading: true, ...store }),
+  [types.GET_CURRENT_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
   [types.GET_CURRENT_QUEUE_SUCCESS]: (store, action) => ({
+    ...store,
     isLoading: false,
     currentQueue: action.payload,
-    ...store
   }),
   [types.GET_CURRENT_QUEUE_FAILURE]: (store, action) => ({
+    ...store,
     isLoading: false,
     error: action.error,
     currentQueue: undefined,
-    ...store
   }),
-  [types.CREATE_QUEUE_REQUEST]: (store) => ({ isLoading: true, ...store }),
+  [types.CREATE_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
   [types.CREATE_QUEUE_SUCCESS]: (store, action) => ({
+    ...store,
     isLoading: false,
     queueDetail: action.payload,
-    ...store
   }),
   [types.CREATE_QUEUE_FAILURE]: (store, action) => ({
+    ...store,
     isLoading: false,
     error: action.error,
-    ...store
+  }),
+  [types.UPDATE_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
+  [types.UPDATE_QUEUE_SUCCESS]: (store) => ({
+    ...store,
+    isLoading: false,
+  }),
+  [types.UPDATE_QUEUE_FAILURE]: (store, action) => ({
+    ...store,
+    isLoading: false,
+    error: action.error,
+  }),
+  [types.DELETE_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
+  [types.DELETE_QUEUE_SUCCESS]: (store) => ({
+    ...store,
+    isLoading: false,
+    queueDetail: {},
+  }),
+  [types.DELETE_QUEUE_FAILURE]: (store, action) => ({
+    ...store,
+    isLoading: false,
+    error: action.error,
+  }),
+  [types.CALL_NEXT_CLIENT_REQUEST]: (store) => ({ ...store, isLoading: true }),
+  [types.CALL_NEXT_CLIENT_SUCCESS]: (store) => ({
+    ...store,
+    isLoading: false,
+  }),
+  [types.CALL_NEXT_CLIENT_FAILURE]: (store, action) => ({
+    ...store,
+    isLoading: false,
+    error: action.error,
+  }),
+  [types.JOIN_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
+  [types.JOIN_QUEUE_SUCCESS]: (store, action) => ({
+    ...store,
+    isLoading: false,
+    currentQueue: action.payload,
+  }),
+  [types.JOIN_QUEUE_FAILURE]: (store, action) => ({
+    ...store,
+    isLoading: false,
+    error: action.error,
+  }),
+  [types.QUIT_QUEUE_REQUEST]: (store) => ({ ...store, isLoading: true }),
+  [types.QUIT_QUEUE_SUCCESS]: (store) => ({
+    ...store,
+    isLoading: false,
+    currentQueue: undefined,
+  }),
+  [types.QUIT_QUEUE_FAILURE]: (store, action) => ({
+    ...store,
+    isLoading: false,
+    error: action.error,
   }),
 });
 

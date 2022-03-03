@@ -27,6 +27,7 @@ export const FiltersContainer = styled.ScrollView`
   flex-direction: row;
   margin-top: 42px;
   height: 44px;
+  max-height: 44px;
 `;
 
 export const Content = styled.ScrollView`

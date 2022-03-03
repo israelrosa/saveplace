@@ -38,8 +38,8 @@ const Queues: React.FC = () => {
             key={userQueue.id}
             style={{ marginBottom: 12 }}
             onPress={() => navigation.navigate('EstablishmentQueueDetails', { id: userQueue.id })}
+            tagId={userQueue.tagId}
             title={userQueue.name}
-            image={userQueue.image}
             numberOfPeople={userQueue.numberOfPeople}
             waitingTimeMinutes={userQueue.waitingTimeMinutes}
           />

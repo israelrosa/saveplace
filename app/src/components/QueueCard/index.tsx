@@ -44,7 +44,6 @@ const QueueCard: React.FC<QueueCardProps> = ({
 
   useEffect(() => {
     api.get(`/tags/${tagId}`).then(({ data }) => {
-      console.log(data.name);
       setTag(data.name);
     }).catch(err => {
       console.log(err);

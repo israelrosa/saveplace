@@ -14,6 +14,9 @@ export const Header = styled.View`
   background-color: ${(props) => props.theme.colors.primary};
   padding: 24px 24px;
   border-bottom-right-radius: 40px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const HeaderText = styled.Text`
@@ -23,7 +26,7 @@ export const HeaderText = styled.Text`
   margin-left: 12px;
 `;
 
-export const HeaderGoBack = styled.TouchableOpacity`
+export const HeaderAction = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
 `;

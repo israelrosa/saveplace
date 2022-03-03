@@ -28,6 +28,7 @@ export const ContentImage = styled.Image`
   border-radius: 4px;
   height: 96px;
   width: 96px;
+  margin-right: 12px;
 `;
 
 export const ContentInfo = styled.View`

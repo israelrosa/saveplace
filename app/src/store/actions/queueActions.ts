@@ -166,12 +166,48 @@ export const createQueue = ({ name, status, tagId }: CreateQueueParams) =>
       });
   });
 
+export const updateQueue = ({ queueId, name, status, tagId }: CreateQueueParams) =>
+  (dispatch, getState) => {
+    function request() {
+      return { type: types.UPDATE_QUEUE_REQUEST };
+    }
+    function success() {
+      return { type: types.UPDATE_QUEUE_SUCCESS };
+    }
+    function failure(error) {
+      return { type: types.UPDATE_QUEUE_FAILURE, error };
+    }
+
+    return new Promise((resolve, reject) => {
+      dispatch(request());
+
+      api
+        .put(
+          `/queues/${queueId}/`,
+          { name, status, tagId },
+          {
+            headers: {
+              Authorization: getState().auth.token.authorizationToken,
+            },
+          }
+        )
+        .then(() => {
+          resolve();
+          return dispatch(success());
+        })
+        .catch((error) => {
+          reject(error);
+          return dispatch(failure(error.toString()));
+        });
+    });
+  };
+
 export const deleteQueue = (queueId: string) => {
   function request() {
     return { type: types.DELETE_QUEUE_REQUEST };
   }
-  function success(payload) {
-    return { type: types.DELETE_QUEUE_SUCCESS, payload };
+  function success() {
+    return { type: types.DELETE_QUEUE_SUCCESS };
   }
   function failure(error) {
     return { type: types.DELETE_QUEUE_FAILURE, error };
@@ -183,7 +219,6 @@ export const deleteQueue = (queueId: string) => {
     api
       .delete(
         `/queues/${queueId}`,
-        {},
         {
           headers: {
             Authorization: getState().auth.token.authorizationToken,
@@ -210,8 +245,8 @@ export const callNextClient = (queueId: string) => {
     dispatch(request());
 
     api
-      .delete(
-        `/queues/${queueId}`,
+      .patch(
+        `/queues/${queueId}/actions/call/next/`,
         {},
         {
           headers: {
@@ -222,4 +257,74 @@ export const callNextClient = (queueId: string) => {
       .then(() => dispatch(success()))
       .catch((error) => dispatch(failure(error.toString())));
   };
+};
+
+export const joinQueue = (queueId: string) => (dispatch, getState) => {
+  function request() {
+    return { type: types.JOIN_QUEUE_REQUEST };
+  }
+  function success(payload) {
+    return { type: types.JOIN_QUEUE_SUCCESS, payload };
+  }
+  function failure(error) {
+    return { type: types.JOIN_QUEUE_FAILURE, error };
+  }
+
+  return new Promise((resolve, reject) => {
+    dispatch(request());
+
+    api
+      .post(
+        '/clients/',
+        { queueId },
+        {
+          headers: {
+            Authorization: getState().auth.token.authorizationToken,
+          },
+        }
+      )
+      .then(({ data }) => {
+        resolve();
+        return dispatch(success(data));
+      })
+      .catch((error) => {
+        reject(error);
+        return dispatch(failure(error.toString()));
+      });
+  });
+};
+
+export const quitQueue = (queueClientId: string) => (dispatch, getState) => {
+  function request() {
+    return { type: types.QUIT_QUEUE_REQUEST };
+  }
+  function success(payload) {
+    return { type: types.QUIT_QUEUE_SUCCESS, payload };
+  }
+  function failure(error) {
+    return { type: types.QUIT_QUEUE_FAILURE, error };
+  }
+
+  return new Promise((resolve, reject) => {
+    dispatch(request());
+
+    api
+      .patch(
+        `/clients/${queueClientId}/actions/quit/`,
+        {},
+        {
+          headers: {
+            Authorization: getState().auth.token.authorizationToken,
+          },
+        }
+      )
+      .then(() => {
+        resolve();
+        return dispatch(success());
+      })
+      .catch((error) => {
+        reject(error);
+        return dispatch(failure(error.toString()));
+      });
+  });
 };

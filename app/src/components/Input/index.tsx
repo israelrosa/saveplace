@@ -3,7 +3,7 @@ import { TextInput } from 'react-native-paper';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { useTheme } from 'styled-components';
 import { useField } from '@unform/core';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import UilEye from '@iconscout/react-native-unicons/icons/uil-eye';
 import UilEyeSlash from '@iconscout/react-native-unicons/icons/uil-eye-slash';
 
@@ -20,7 +20,7 @@ const PasswordIcon: React.FC = ({ isSecure, color }) => (
   </>
 );
 
-const Input: React.FC<InputProps> = ({ name, onChangeText, isPassword, ...rest }) => {
+const Input: React.FC<InputProps> = ({ name, onChangeText, isPassword, style, ...rest }) => {
   const theme = useTheme();
   const inputRef = useRef(null);
   const [secure, setSecure] = useState(isPassword);
@@ -67,7 +67,7 @@ const Input: React.FC<InputProps> = ({ name, onChangeText, isPassword, ...rest }
   );
 
   return (
-    <>
+    <View style={style}>
       <TextInput
         mode="outlined"
         ref={inputRef}
@@ -109,7 +109,7 @@ const Input: React.FC<InputProps> = ({ name, onChangeText, isPassword, ...rest }
           {error}
         </Text>
       )}
-    </>
+    </View>
   );
 };
 

@@ -83,7 +83,7 @@ export const logout = () => {
     api
       .post(
         '/revoke/',
-        { refreshTokenId: getState().auth.token.refreshToken },
+        { refreshToken: getState().auth.token.refreshToken },
         {
           headers: {
             Authorization: getState().auth.token.authorizationToken,

@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useTheme } from 'styled-components';
 import UilAngleLeft from '@iconscout/react-native-unicons/icons/uil-angle-left-b';
-import { useNavigation } from '@react-navigation/native';
+import UilTrash from '@iconscout/react-native-unicons/icons/uil-trash';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Input from 'components/Input';
 import { Form } from '@unform/mobile';
 import { Switch } from 'react-native-paper';
@@ -11,7 +12,7 @@ import CustomButton from 'components/CustomButton';
 import SelectInput from 'components/SelectInput';
 import * as Yup from 'yup';
 import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
-import { createQueue } from 'store/actions/queueActions';
+import { createQueue, deleteQueue, updateQueue } from 'store/actions/queueActions';
 import Modal from 'components/Modal';
 import { getTags } from 'store/actions/tagActions';
 import {
@@ -19,7 +20,7 @@ import {
   Container,
   Content,
   Header,
-  HeaderGoBack,
+  HeaderAction,
   HeaderText,
   ModalContainer,
   Section,
@@ -29,49 +30,85 @@ const QueueForm: React.FC = () => {
   const theme = useTheme();
   const formRef = useRef(null);
   const navigation = useNavigation();
-  const { tag } = useAppSelector(state => state);
+  const { tag, queue } = useAppSelector(state => state);
   const dispatch = useAppDispatch();
-  const [status, setStatus] = useState(true);
+  const [status, setStatus] = useState(false);
   const [selectedTag, setSelectedTag] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [queueName, setQueueName] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [queueId, setQueueId] = useState('');
+  const route = useRoute();
 
-  const handleSubmit = async (data) => {
-    try {
-      // Remove all previous errors
-      formRef.current.setErrors({});
-      const schema = Yup.object().shape({
-        queueName: Yup.string().required('O nome da fila é obrigatório'),
-      });
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-
-      // Validation passed
-      setIsLoading(true);
-      dispatch(createQueue({
-        name: data.queueName,
-        tagId: selectedTag.id,
-        status: status ? 'active' : 'disabled'
-      })).then((id) => {
-        navigation.navigate('EstablishmentQueueDetails', { id });
-        setIsLoading(false);
-      }).catch((err) => {
-        console.log(err);
-      });
-    } catch (err) {
-      const validationErrors = {};
-      if (err instanceof Yup.ValidationError) {
-        err.inner.forEach((error) => {
-          Reflect.set(validationErrors, error.path, error.message);
-        });
-        formRef.current.setErrors(validationErrors);
+  useEffect(() => {
+    dispatch(getTags());
+    if (route?.params?.isEditMode) {
+      setQueueId(queue.queueDetail.id);
+      setStatus(queue.queueDetail.status === 'active');
+      const queueTag = tag?.data?.find(t => t.id === queue.queueDetail.tagId);
+      if (queueTag) {
+        setSelectedTag(queueTag);
       }
+      setQueueName(queue.queueDetail.name);
     }
+  }, [route.params, queue.queueDetail]);
+
+  const handleSubmit = useCallback((data) => {
+    (async () => {
+      try {
+        // Remove all previous errors
+        formRef.current.setErrors({});
+        const schema = Yup.object().shape({
+          queueName: Yup.string().required('O nome da fila é obrigatório'),
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        // Validation passed
+        setIsLoading(true);
+        if (route?.params?.isEditMode) {
+          dispatch(updateQueue({
+            queueId,
+            name: data.queueName,
+            tagId: selectedTag.id,
+            status: status ? 'active' : 'disabled'
+          })).then(() => {
+            navigation.navigate('EstablishmentQueueDetails', { id: queueId });
+            setIsLoading(false);
+          }).catch((err) => {
+            console.log(err);
+          });
+        } else {
+          dispatch(createQueue({
+            name: data.queueName,
+            tagId: selectedTag.id,
+            status: status ? 'active' : 'disabled'
+          })).then((id) => {
+            navigation.navigate('EstablishmentQueueDetails', { id });
+            setIsLoading(false);
+          }).catch((err) => {
+            console.log(err);
+          });
+        }
+      } catch (err) {
+        const validationErrors = {};
+        if (err instanceof Yup.ValidationError) {
+          err.inner.forEach((error) => {
+            Reflect.set(validationErrors, error.path, error.message);
+          });
+          formRef.current.setErrors(validationErrors);
+        }
+      }
+    })();
+  }, [route.params, queueId, selectedTag]);
+
+  const handleDeleteQueue = () => {
+    dispatch(deleteQueue(queueId));
+    navigation.navigate('Queues');
   };
 
   const handleSelectTags = () => {
-    dispatch(getTags());
     setOpenModal(true);
   };
 
@@ -84,25 +121,30 @@ const QueueForm: React.FC = () => {
     <Container>
       <StatusBar backgroundColor={theme.colors.primary} style="light" />
       <Header>
-        <HeaderGoBack onPress={() => navigation.navigate('Queues')}>
+        <HeaderAction onPress={() => navigation.navigate('Queues')}>
           <UilAngleLeft color={theme.colors.text.reverse} size={24} />
-          <HeaderText>Criar fila</HeaderText>
-        </HeaderGoBack>
+          <HeaderText>{route?.params?.isEditMode ? 'Editar fila' : 'Criar fila'}</HeaderText>
+        </HeaderAction>
+        {route?.params?.isEditMode && (
+          <HeaderAction onPress={handleDeleteQueue}>
+            <UilTrash color={theme.colors.text.reverse} size={24} />
+          </HeaderAction>
+        )}
       </Header>
       <Content>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form initialData={{ queueName }} ref={formRef} onSubmit={handleSubmit}>
           <Section>Detalhes</Section>
-          <Input label="Nome da fila" name="queueName" />
+          <Input value={queueName} label="Nome da fila" name="queueName" onChangeText={text => setQueueName(text)} />
           <Section style={{ marginTop: 24 }}>Tag</Section>
           <SelectInput value={selectedTag?.name || ''} placeholder="Selecione a tag" onPress={handleSelectTags} />
           <Section style={{ marginTop: 24 }}>Status</Section>
-          <Option hideArrowRight text="Aberto" iconRight={<Switch value={status} onValueChange={(value) => setStatus(value)} />} />
+          <Option hideArrowRight text={status ? 'Aberto' : 'Fechado'} iconRight={<Switch value={status} onValueChange={(value) => setStatus(value)} />} />
         </Form>
       </Content>
       <ActionsContainer>
         <CustomButton
           color={theme.colors.primary}
-          text="Criar"
+          text={route?.params?.isEditMode ? 'Enviar' : 'Criar'}
           isLoading={isLoading}
           onPress={() => formRef.current.submitForm()}
         />
