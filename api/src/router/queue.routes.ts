@@ -11,13 +11,18 @@ queuesRouter.post(
   ensureAuthentication(UserType.ESTABLISHMENT),
   queuesController.create,
 );
+queuesRouter.get('/', queuesController.getAll);
+queuesRouter.get('/:queueId/', queuesController.get);
+queuesRouter.put(
+  '/:queueId/',
+  ensureAuthentication(UserType.ESTABLISHMENT),
+  queuesController.update,
+);
 queuesRouter.delete(
   '/:queueId/',
   ensureAuthentication(UserType.ESTABLISHMENT),
   queuesController.delete,
 );
-queuesRouter.get('/', queuesController.getAll);
-queuesRouter.get('/:queueId/', ensureAuthentication(), queuesController.get);
 queuesRouter.get(
   '/:queueId/clients',
   ensureAuthentication(UserType.ESTABLISHMENT),

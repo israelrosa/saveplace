@@ -2,6 +2,7 @@ import { EntityManager, getManager } from 'typeorm';
 import QueueClient, { QueueClientType } from 'models/QueueClient';
 import ErrorHandler from 'utils/ErrorHandler';
 import ERROR from 'utils';
+import Queue from 'models/Queue';
 
 export default class ShowCurrentQueueService {
   private entityManager: EntityManager;
@@ -14,7 +15,6 @@ export default class ShowCurrentQueueService {
     const currentQueue = await this.entityManager
       .getRepository(QueueClient)
       .createQueryBuilder('client')
-      .leftJoinAndSelect('client.queue', 'queue', 'queue.id = client.queueId')
       .andWhere(
         'client.status = :firstStatus or client.status = :secondStatus',
         {
@@ -29,6 +29,14 @@ export default class ShowCurrentQueueService {
       throw new ErrorHandler(ERROR.USER_DOES_NOT_HAVE_CURRENT_QUEUE);
     }
 
-    return currentQueue;
+    const queue = await this.entityManager.findOne(Queue, currentQueue.queueId);
+
+    if (!queue) {
+      throw new ErrorHandler(ERROR.INVALID_RESOURCE);
+    }
+
+    const position = currentQueue.code - queue.currentCode;
+
+    return { ...currentQueue, position };
   }
 }

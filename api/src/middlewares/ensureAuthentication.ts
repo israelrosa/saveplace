@@ -26,7 +26,6 @@ const ensureAuthentication =
     try {
       const decoded = verify(token, authConfig.secret);
       const { sub, userType } = decoded as ITokenPayload;
-
       if (type && userType !== type) {
         throw new Error();
       }
@@ -38,8 +37,8 @@ const ensureAuthentication =
 
       return next();
     } catch (err) {
-      throw new ErrorHandler(ERROR.INVALID_TOKEN);
       log.error(ERROR.INVALID_TOKEN.message);
+      throw new ErrorHandler(ERROR.INVALID_TOKEN);
     }
   };
 

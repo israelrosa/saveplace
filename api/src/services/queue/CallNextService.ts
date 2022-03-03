@@ -33,7 +33,7 @@ export default class CallNextService {
 
     const nextClient = await this.entityManager.findOne(
       QueueClient,
-      queue.nextClient(),
+      queue.nextClient().id,
     );
 
     if (!nextClient) {

@@ -44,7 +44,10 @@ export default class QueueClient {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => Queue, queue => queue.clients)
+  @ManyToOne(() => Queue, queue => queue.clients, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'queueId' })
   queue: Queue;
 

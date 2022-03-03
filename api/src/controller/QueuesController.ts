@@ -7,6 +7,7 @@ import ShowAllQueuesService from 'services/queue/ShowAllQueuesService';
 import ShowAllUserQueuesService from 'services/queue/ShowAllUserQueuesService';
 import ShowQueueClientsService from 'services/queue/ShowQueueClientsService';
 import ShowQueueService from 'services/queue/ShowQueueService';
+import UpdateQueueService from 'services/queue/UpdateQueueService';
 
 export default class QueuesController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -25,6 +26,24 @@ export default class QueuesController {
     return response.status(200).json(queue);
   }
 
+  async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.user;
+    const { name, status, tagId } = request.body;
+    const { queueId } = request.params;
+
+    const updateQueueService = new UpdateQueueService();
+
+    await updateQueueService.exec({
+      queueId,
+      name,
+      status,
+      tagId,
+      userId: id,
+    });
+
+    return response.status(200).json();
+  }
+
   async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
     const { queueId } = request.params;
@@ -41,7 +60,6 @@ export default class QueuesController {
 
   async get(request: Request, response: Response): Promise<Response> {
     const { queueId } = request.params;
-
     const showQueueService = new ShowQueueService();
 
     const queue = await showQueueService.exec(queueId);
@@ -68,7 +86,7 @@ export default class QueuesController {
       limit: Number(limit),
     });
 
-    return response.status(200).json(queues);
+    return response.status(200).json(instanceToPlain(queues));
   }
 
   async getAllUserQueues(

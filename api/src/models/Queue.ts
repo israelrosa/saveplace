@@ -67,34 +67,17 @@ export default class Queue {
     return this.clients.filter(client => client.status === 'waiting').length;
   }
 
-  @Expose({ name: 'nextClient' })
-  nextClient() {
-    let nextCode = this.currentCode + 1;
-    const orderedClients = this.clients.sort((a, b) => a.code - b.code);
-    const nextClient = orderedClients.find(client => {
-      const isNext = client.code === nextCode;
-      const isWaiting = client.status !== QueueClientType.EXITED;
-
-      if (isNext && !isWaiting) {
-        nextCode += 1;
-        return false;
-      }
-      if (!isNext) {
-        return false;
-      }
-
-      return true;
-    });
-
-    if (!nextClient) {
-      return undefined;
-    }
-
-    return nextClient;
-  }
-
   @Expose({ name: 'previousClient' })
   previousClient() {
+    const previousClientWithCurrentCode = this.clients.find(
+      client =>
+        client.code === this.currentCode &&
+        client.status === QueueClientType.ATTENDED,
+    );
+    if (previousClientWithCurrentCode) {
+      return previousClientWithCurrentCode;
+    }
+
     const previousCode = this.currentCode - 1;
     const previousClient = this.clients.find(
       client => client.code === previousCode,
@@ -148,5 +131,35 @@ export default class Queue {
     const lastCode = result !== undefined ? result.code : this.currentCode;
 
     return lastCode;
+  }
+
+  @Expose({ name: 'nextClient' })
+  nextClient() {
+    if (this.currentCode === this.lastGeneratedCode()) {
+      return undefined;
+    }
+    const orderedClients = this.clients.sort((a, b) => a.code - b.code);
+    let nextClient;
+    for (
+      let nextCode = this.currentCode + 1;
+      !nextClient || nextCode <= this.lastGeneratedCode;
+      nextCode += 1
+    ) {
+      nextClient = orderedClients.find(client => {
+        const isNext = client.code === nextCode;
+        const isWaiting = client.status !== QueueClientType.EXITED;
+
+        if (!isWaiting) {
+          return false;
+        }
+        if (!isNext) {
+          return false;
+        }
+
+        return true;
+      });
+    }
+
+    return nextClient;
   }
 }

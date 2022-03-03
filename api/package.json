@@ -5,7 +5,7 @@
    "license": "MIT",
    "scripts": {
       "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-      "dev": "set NODE_ENV=development&& export NODE_ENV=development&& ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/index.ts",
+      "dev": "set NODE_ENV=development&& export NODE_ENV=development&& ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --exit-child --ignore-watch node_modules src/index.ts",
       "start": "ts-node src/index.ts"
    },
    "dependencies": {

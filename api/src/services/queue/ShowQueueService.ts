@@ -11,19 +11,17 @@ export default class ShowQueueService {
   }
 
   async exec(queueId: string): Promise<Queue> {
-    let queue;
     try {
-      queue = await this.entityManager.findOne(Queue, queueId, {
+      const queue = await this.entityManager.findOne(Queue, queueId, {
         relations: ['clients', 'user'],
       });
 
       if (!queue) {
         throw new ErrorHandler(ERROR.INVALID_RESOURCE);
       }
+      return queue;
     } catch (error) {
       throw new ErrorHandler(ERROR.INVALID_RESOURCE);
     }
-    console.log(queue);
-    return queue;
   }
 }

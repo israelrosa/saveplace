@@ -10,22 +10,21 @@ export default class RevokeTokenService {
     this.entityManager = getManager();
   }
 
-  async exec(userId: string, refreshTokenId: string): Promise<void> {
-    const refreshToken = await this.entityManager.findOne(
-      RefreshToken,
-      refreshTokenId,
-    );
+  async exec(userId: string, refreshToken: string): Promise<void> {
+    const findedRefreshToken = await this.entityManager.findOne(RefreshToken, {
+      where: { token: refreshToken },
+    });
 
-    if (!refreshToken) {
+    if (!findedRefreshToken) {
       throw new ErrorHandler(ERROR.INVALID_RESOURCE);
     }
 
-    if (refreshToken.userId === userId) {
+    if (findedRefreshToken.userId === userId) {
       throw new ErrorHandler(ERROR.USER_DOES_NOT_HAVE_PERMISSION);
     }
 
     try {
-      this.entityManager.delete(refreshToken);
+      this.entityManager.delete(findedRefreshToken);
     } catch (error) {
       throw new ErrorHandler(ERROR.DATABASE_ERROR);
     }

@@ -80,11 +80,11 @@ export default class UsersController {
 
   async revoke(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { refreshTokenId } = request.body;
+    const { refreshToken } = request.body;
 
     const revokeTokenService = new RevokeTokenService();
 
-    await revokeTokenService.exec(id, refreshTokenId);
+    await revokeTokenService.exec(id, refreshToken);
 
     return response.status(200).json();
   }

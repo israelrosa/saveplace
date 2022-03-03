@@ -28,7 +28,12 @@ export default class ShowAllQueuesService {
   }: QueueQueries): Promise<QueuePaginationResponse> {
     const queryBuilder = this.entityManager
       .getRepository(Queue)
-      .createQueryBuilder('queue');
+      .createQueryBuilder('queue')
+      .leftJoinAndSelect(
+        'queue.clients',
+        'clients',
+        'clients.queueId = queue.id',
+      );
 
     if (search) {
       queryBuilder.andWhere(`queue.name LIKE '%${search}%'`);
