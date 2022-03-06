@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from 'components/CustomButton';
-import { Keyboard, TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity, StatusBar as SB, View } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import SelectOption from 'components/SelectOption';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
-import { register } from 'store/actions/authenticationActions';
+import { clearAuthErrors, register } from 'store/actions/authenticationActions';
 import { useTheme } from 'styled-components';
 import { cepApi } from 'services/api';
+import { Button, Dialog, Paragraph, Portal, ProgressBar } from 'react-native-paper';
+import { errors } from 'utils';
 import {
   ActionsContainer,
   Container,
@@ -29,6 +31,8 @@ const SignOn: React.FC = () => {
   const [locationData, setLocationData] = useState({});
   const [userData, setUserData] = useState({});
   const [userType, setUserType] = useState('client');
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [error, setError] = useState({});
   const [showNextSection, setShowNextSection] = useState(false);
   const { auth } = useAppSelector((state) => state);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,11 +49,25 @@ const SignOn: React.FC = () => {
       Keyboard.removeAllListeners('keyboardDidShow');
       Keyboard.removeAllListeners('keyboardDidHide');
     };
-  }, [Keyboard]);
+  }, []);
 
   useEffect(() => {
     setIsLoading(auth.isLoading);
+    if (auth.error) {
+      const selectedError = errors[auth.error];
+      if (selectedError) {
+        setError(errors[auth.error]);
+      } else {
+        setError(errors.unknown_error);
+      }
+      setErrorDialog(true);
+    }
   }, [auth]);
+
+  const handleCloseErrorDialog = () => {
+    dispatch(clearAuthErrors());
+    setErrorDialog(false);
+  };
 
   const handleSubmit = async (data) => {
     if (showNextSection) {
@@ -66,7 +84,6 @@ const SignOn: React.FC = () => {
         });
 
         // Validation passed
-        console.log(locationData);
         setIsLoading(true);
         dispatch(
           register({
@@ -78,12 +95,14 @@ const SignOn: React.FC = () => {
           })
         ).then(() => {
           navigator.navigate('SignIn');
+        }).catch((err) => {
+          console.log(err);
         });
       } catch (err) {
         const validationErrors = {};
         if (err instanceof Yup.ValidationError) {
-          err.inner.forEach((error) => {
-            Reflect.set(validationErrors, error.path, error.message);
+          err.inner.forEach((errData) => {
+            Reflect.set(validationErrors, errData.path, errData.message);
           });
           formLocationRef.current.setErrors(validationErrors);
         }
@@ -103,7 +122,6 @@ const SignOn: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
-        console.log(data);
 
         // Validation passed
         if (userType === 'establishment') {
@@ -114,13 +132,15 @@ const SignOn: React.FC = () => {
 
           dispatch(register({ ...data, type: userType })).then(() => {
             navigator.navigate('SignIn');
+          }).catch(err => {
+            console.log(err);
           });
         }
       } catch (err) {
         const validationErrors = {};
         if (err instanceof Yup.ValidationError) {
-          err.inner.forEach((error) => {
-            Reflect.set(validationErrors, error.path, error.message);
+          err.inner.forEach((errData) => {
+            Reflect.set(validationErrors, errData.path, errData.message);
           });
           formUserRef.current.setErrors(validationErrors);
         }
@@ -134,7 +154,6 @@ const SignOn: React.FC = () => {
         cepApi
           .get(`/${text}`)
           .then((result) => {
-            console.log(result.data);
             const { cep, state, city, neighborhood, street, location } = result.data;
             setLocationData({
               cep,
@@ -158,6 +177,9 @@ const SignOn: React.FC = () => {
 
   return (
     <Container>
+      <View style={{ position: 'absolute', width: '100%', top: SB.currentHeight }}>
+        <ProgressBar indeterminate visible={isLoading} />
+      </View>
       <StatusBar style="auto" />
       <HeaderText>Cadastrar</HeaderText>
       {showNextSection ? (
@@ -251,6 +273,17 @@ const SignOn: React.FC = () => {
           )}
         </Form>
       )}
+      <Portal>
+        <Dialog visible={errorDialog}>
+          <Dialog.Title>{error.title}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{error.message}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleCloseErrorDialog}>Fechar</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </Container>
   );
 };

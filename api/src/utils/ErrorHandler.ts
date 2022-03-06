@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { log } from 'utils';
+import { log } from '.';
 
 interface ErrorParams {
   id: string;

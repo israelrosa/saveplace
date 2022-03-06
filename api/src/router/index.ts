@@ -1,6 +1,6 @@
-import UsersController from 'controller/UsersController';
 import { Router } from 'express';
-import ensureAuthentication from 'middlewares/ensureAuthentication';
+import UsersController from '../controller/UsersController';
+import ensureAuthentication from '../middlewares/ensureAuthentication';
 import queuesRouter from './queue.routes';
 import queueClientsRouter from './queueClients.routes';
 import tagsRouter from './tags.routes';

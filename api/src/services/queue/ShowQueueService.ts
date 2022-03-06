@@ -1,7 +1,7 @@
 import { EntityManager, getManager } from 'typeorm';
-import Queue from 'models/Queue';
-import ERROR from 'utils';
-import ErrorHandler from 'utils/ErrorHandler';
+import Queue from '../../models/Queue';
+import ERROR from '../../utils';
+import ErrorHandler from '../../utils/ErrorHandler';
 
 export default class ShowQueueService {
   private entityManager: EntityManager;

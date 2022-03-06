@@ -44,6 +44,7 @@
       }
     ]
   },
+  "ignorePatterns": ["dist/"],
   "settings": {
     "import/resolver": {
       "typescript": {}

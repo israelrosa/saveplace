@@ -1,8 +1,12 @@
 import { EntityManager, getManager } from 'typeorm';
-import QueueClient, { QueueClientType } from 'models/QueueClient';
-import ErrorHandler from 'utils/ErrorHandler';
-import ERROR from 'utils';
-import Queue from 'models/Queue';
+import QueueClient, { QueueClientType } from '../../models/QueueClient';
+import ErrorHandler from '../../utils/ErrorHandler';
+import ERROR from '../../utils';
+import Queue from '../../models/Queue';
+
+interface CurrentQueueResponse extends Partial<Queue> {
+  position: number;
+}
 
 export default class ShowCurrentQueueService {
   private entityManager: EntityManager;
@@ -11,7 +15,7 @@ export default class ShowCurrentQueueService {
     this.entityManager = getManager();
   }
 
-  async exec(userId: string): Promise<QueueClient> {
+  async exec(userId: string): Promise<CurrentQueueResponse> {
     const currentQueue = await this.entityManager
       .getRepository(QueueClient)
       .createQueryBuilder('client')

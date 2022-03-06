@@ -1,6 +1,6 @@
-import QueueClientsController from 'controller/QueueClientsController';
 import { Router } from 'express';
-import ensureAuthentication from 'middlewares/ensureAuthentication';
+import QueueClientsController from '../controller/QueueClientsController';
+import ensureAuthentication from '../middlewares/ensureAuthentication';
 import { UserType } from '../models/User';
 
 const queueClientsRouter = Router();

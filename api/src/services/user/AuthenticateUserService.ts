@@ -1,7 +1,7 @@
-import User from 'models/User';
 import { EntityManager, getManager } from 'typeorm';
 import bcrypt from 'bcrypt';
-import ErrorHandler from 'utils/ErrorHandler';
+import User from '../../models/User';
+import ErrorHandler from '../../utils/ErrorHandler';
 import ERROR from '../../utils';
 import authConfig from '../../configs/auth';
 import CreateSessionToken from './CreateSessionToken';
@@ -34,13 +34,13 @@ export default class AuthenticateUserService {
     const user = await this.entityManager.findOne(User, { where: { email } });
 
     if (!user) {
-      throw new ErrorHandler(ERROR.USER_NOT_FOUND);
+      throw new ErrorHandler(ERROR.INVALID_CREDENTIALS);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new ErrorHandler(ERROR.INVALID_PASSWORD);
+      throw new ErrorHandler(ERROR.INVALID_CREDENTIALS);
     }
 
     const session = CreateSessionToken(

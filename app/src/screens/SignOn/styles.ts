@@ -13,7 +13,7 @@ export const HeaderText = styled.Text`
   font-size: ${(props) => props.theme.fonts.title.fontSize}px;
   font-family: ${(props) => props.theme.fonts.title.fontFamily};
   padding: 0 24px;
-  margin-bottom: 24px;
+  margin: 24px 0;
 `;
 
 export const InputsContainer = styled.ScrollView`

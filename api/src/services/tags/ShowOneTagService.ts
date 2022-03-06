@@ -1,7 +1,7 @@
-import Tag from 'models/Tag';
 import { EntityManager, getManager } from 'typeorm';
-import ErrorHandler from 'utils/ErrorHandler';
-import ERROR from 'utils';
+import Tag from '../../models/Tag';
+import ErrorHandler from '../../utils/ErrorHandler';
+import ERROR from '../../utils';
 
 export default class ShowOneTagService {
   private entityManager: EntityManager;

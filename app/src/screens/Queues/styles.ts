@@ -26,3 +26,10 @@ export const HeaderText = styled.Text`
 export const Content = styled.ScrollView`
   padding: 24px;
 `;
+
+export const LoadingContent = styled.View`
+  padding: 24px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

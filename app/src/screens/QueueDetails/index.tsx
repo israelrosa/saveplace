@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import CustomButton from 'components/CustomButton';
 import { StatusBar } from 'expo-status-bar';
 import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { callNextClient, getCurrentQueue, getQueue, joinQueue, quitQueue } from 'store/actions/queueActions';
 import { useTheme } from 'styled-components';
@@ -37,9 +37,8 @@ const QueueDetails: React.FC = () => {
   const { queue, user } = useAppSelector(state => state);
   const [queueName, setQueueName] = useState('');
   const [queueOwner, setQueueOwner] = useState('');
-  // const [currentClient, setCurrentClient] = useState({});
   const [nextClient, setNextClient] = useState({});
-  const [previousClient, setPreviousClient] = useState({});
+  const [previousOrCurrentClient, setPreviousOrCurrentClient] = useState({});
   const [waitingTimeMinutes, setWaitingTimeMinutes] = useState(0);
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [currentCode, setCurrentCode] = useState(0);
@@ -76,7 +75,7 @@ const QueueDetails: React.FC = () => {
       console.log(queue.queueDetail);
       setWaitingTimeMinutes(queue.queueDetail.waitingTimeMinutes);
       setNextClient(queue.queueDetail.nextClient);
-      setPreviousClient(queue.queueDetail.previousClient);
+      setPreviousOrCurrentClient(queue.queueDetail.previousClient);
       setQueueId(queue.queueDetail.id);
       setQueueName(queue.queueDetail.name);
       setQueueOwner(queue.queueDetail?.user?.name);
@@ -86,7 +85,7 @@ const QueueDetails: React.FC = () => {
         setQueuePosition(queue.queueDetail.numberOfPeople);
       }
     }
-  }, [queue, queue.queueDetail, queue.currentQueue]);
+  }, [router.params, queue, queue.queueDetail, queue.currentQueue]);
 
   useEffect(() => {
     if (!router?.params?.id && queue.currentQueue) {
@@ -111,10 +110,30 @@ const QueueDetails: React.FC = () => {
   const handleQuitQueue = () => {
     dispatch(quitQueue(queueClientId)).then(() => {
       navigation.navigate('SearchQueueDetails', { id: queueId });
+      setQueueName('');
+      setQueueOwner('');
+      setNextClient({});
+      setPreviousOrCurrentClient({});
+      setWaitingTimeMinutes(0);
+      setNumberOfPeople(0);
+      setCurrentCode(0);
+      setQueuePosition(0);
+      setQueueId('');
+      setQueueClientId('');
     }).catch((error) => {
       console.log(error);
     });
   };
+
+  const handleCallNext = useCallback(() => {
+    if (router?.params?.id) {
+      dispatch(callNextClient(router.params.id)).then(() => {
+        dispatch(getQueue(router.params.id));
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [router.params]);
 
   return (
     <Container>
@@ -131,9 +150,11 @@ const QueueDetails: React.FC = () => {
           />
           <HeaderText>{queueOwner}</HeaderText>
         </HeaderTitleContent>
-        <HeaderAction onPress={() => navigation.navigate('QueueForm', { isEditMode: true })}>
-          <UilSetting color={theme.colors.text.reverse} size={24} />
-        </HeaderAction>
+        {user.data.type === 'establishment' && (
+          <HeaderAction onPress={() => navigation.navigate('QueueForm', { isEditMode: true })}>
+            <UilSetting color={theme.colors.text.reverse} size={24} />
+          </HeaderAction>
+        )}
       </Header>
       <SubHeader>
         <SubHeaderText>{queueName}</SubHeaderText>
@@ -148,7 +169,7 @@ const QueueDetails: React.FC = () => {
                   <CardSpan>{user.data.type === 'client' ? 'Atual' : 'Anterior'}</CardSpan>
                   <CardSection>
                     Senha:
-                    {previousClient?.code || 0 }
+                    {previousOrCurrentClient?.code || 0 }
                   </CardSection>
                 </CardBox>
                 <CardBox style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -157,7 +178,9 @@ const QueueDetails: React.FC = () => {
                       uri: 'http://www.stevnserhvervsraad.dk/wp-content/uploads/blank-avatar.png',
                     }}
                   />
-                  <CardSection style={{ marginLeft: 12 }}>{previousClient?.user?.name}</CardSection>
+                  <CardSection style={{ marginLeft: 12 }}>
+                    { previousOrCurrentClient?.user?.name }
+                  </CardSection>
                 </CardBox>
               </Card>
               <View style={{ width: 12 }} />
@@ -217,7 +240,7 @@ const QueueDetails: React.FC = () => {
             <CustomButton color={theme.colors.primary} text="Entrar na fila" onPress={handleJoinQueue} />
           )}
           { router?.params?.id && user.data.type === 'establishment' && (
-            <CustomButton color={theme.colors.primary} text="Chamar próximo" onPress={() => dispatch(callNextClient(router.params.id))} />
+            <CustomButton color={theme.colors.primary} text="Chamar próximo" onPress={handleCallNext} />
           )}
           {!router?.params?.id && (
             <CustomButton color={theme.colors.primary} text="Sair da fila" onPress={handleQuitQueue} />

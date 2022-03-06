@@ -1,7 +1,7 @@
-import User from 'models/User';
 import { getManager, EntityManager } from 'typeorm';
-import ErrorHandler from 'utils/ErrorHandler';
-import ERROR, { log } from 'utils';
+import User from '../../models/User';
+import ErrorHandler from '../../utils/ErrorHandler';
+import ERROR, { log } from '../../utils';
 
 interface RegisterUserData {
   name: string;
@@ -28,7 +28,14 @@ export default class RegisterUserService {
   }
 
   async exec(data: RegisterUserData): Promise<User> {
-    console.log(data);
+    const userAlreadyExists = await this.entityManager.findOne(User, {
+      where: { email: data.email },
+    });
+
+    if (userAlreadyExists) {
+      throw new ErrorHandler(ERROR.USER_ALREADY_EXISTS);
+    }
+
     const validTypes = ['client', 'establishment'];
     if (!validTypes.includes(data.type)) {
       throw new ErrorHandler(ERROR.INVALID_USER_TYPE);

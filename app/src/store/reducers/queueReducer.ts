@@ -11,8 +11,9 @@ const initialState: QueueStore = {
 };
 
 const queueReducer = createReducer(initialState, {
-  [types.GET_QUEUES_REQUEST]: () => ({ isLoading: true }),
-  [types.GET_QUEUES_SUCCESS]: (_, action) => ({
+  [types.GET_QUEUES_REQUEST]: (state) => ({ ...state, isLoading: true }),
+  [types.GET_QUEUES_SUCCESS]: (state, action) => ({
+    ...state,
     isLoading: false,
     publicQueues: action.payload,
   }),
@@ -105,11 +106,16 @@ const queueReducer = createReducer(initialState, {
     ...store,
     isLoading: false,
     currentQueue: undefined,
+    queueDetail: undefined,
   }),
   [types.QUIT_QUEUE_FAILURE]: (store, action) => ({
     ...store,
     isLoading: false,
     error: action.error,
+  }),
+  [types.CLEAR_QUEUE_ERROR]: (store) => ({
+    ...store,
+    error: undefined,
   }),
 });
 

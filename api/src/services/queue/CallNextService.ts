@@ -1,9 +1,9 @@
 import { EntityManager, getManager } from 'typeorm';
-import Queue from 'models/Queue';
-import ERROR, { log } from 'utils';
-import ErrorHandler from 'utils/ErrorHandler';
-import QueueClient, { QueueClientType } from 'models/QueueClient';
 import moment from 'moment';
+import Queue from '../../models/Queue';
+import ERROR, { log } from '../../utils';
+import ErrorHandler from '../../utils/ErrorHandler';
+import QueueClient, { QueueClientType } from '../../models/QueueClient';
 
 export default class CallNextService {
   private entityManager: EntityManager;
@@ -26,14 +26,16 @@ export default class CallNextService {
       throw new ErrorHandler(ERROR.INVALID_RESOURCE);
     }
 
-    if (!queue.nextClient()) {
+    const queueNextClient = queue.nextClient();
+
+    if (!queueNextClient) {
       await this.setCurrentClientStatusAsAttended(queueId);
       throw new ErrorHandler(ERROR.NEXT_CLIENT_DOES_NOT_EXIST);
     }
 
     const nextClient = await this.entityManager.findOne(
       QueueClient,
-      queue.nextClient().id,
+      queueNextClient.id,
     );
 
     if (!nextClient) {

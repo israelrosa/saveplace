@@ -18,7 +18,7 @@ const storage = createSecureStore();
 const persistConfig: PersistConfig<CombinedState> = {
   key: 'root',
   storage,
-  whitelist: ['auth'],
+  whitelist: ['auth.token'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

@@ -230,7 +230,7 @@ export const deleteQueue = (queueId: string) => {
   };
 };
 
-export const callNextClient = (queueId: string) => {
+export const callNextClient = (queueId: string) => (dispatch, getState) => {
   function request() {
     return { type: types.CALL_NEXT_CLIENT_REQUEST };
   }
@@ -241,7 +241,7 @@ export const callNextClient = (queueId: string) => {
     return { type: types.CALL_NEXT_CLIENT_FAILURE, error };
   }
 
-  return (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
     dispatch(request());
 
     api
@@ -254,9 +254,15 @@ export const callNextClient = (queueId: string) => {
           },
         }
       )
-      .then(() => dispatch(success()))
-      .catch((error) => dispatch(failure(error.toString())));
-  };
+      .then(() => {
+        resolve();
+        return dispatch(success());
+      })
+      .catch((error) => {
+        reject(error);
+        return dispatch(failure(error.toString()));
+      });
+  });
 };
 
 export const joinQueue = (queueId: string) => (dispatch, getState) => {
@@ -328,3 +334,5 @@ export const quitQueue = (queueClientId: string) => (dispatch, getState) => {
       });
   });
 };
+
+export const clearQueueError = () => (dispatch) => dispatch({ type: types.CLEAR_QUEUE_ERROR });

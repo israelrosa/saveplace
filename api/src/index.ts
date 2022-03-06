@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import express from 'express';
 import 'express-async-errors';
-import { errorMiddleware } from 'utils/ErrorHandler';
 import { createConnection } from 'typeorm';
+import { errorMiddleware } from './utils/ErrorHandler';
 import router from './router';
 import { log } from './utils';
 

@@ -1,6 +1,6 @@
 import { EntityManager, getManager } from 'typeorm';
-import ErrorHandler from 'utils/ErrorHandler';
-import User from 'models/User';
+import ErrorHandler from '../../utils/ErrorHandler';
+import User from '../../models/User';
 import ERROR from '../../utils';
 
 export default class ShowUserInfoService {

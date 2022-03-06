@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import ExitQueueService from 'services/queueClient/ExitQueueService';
-import JoinQueueService from 'services/queueClient/JoinQueueService';
-import ShowCurrentQueueService from 'services/queueClient/ShowCurrentQueueService';
+import ExitQueueService from '../services/queueClient/ExitQueueService';
+import JoinQueueService from '../services/queueClient/JoinQueueService';
+import ShowCurrentQueueService from '../services/queueClient/ShowCurrentQueueService';
 
 export default class QueueClientsController {
   async join(request: Request, response: Response): Promise<Response> {

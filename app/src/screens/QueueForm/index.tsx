@@ -6,15 +6,16 @@ import UilTrash from '@iconscout/react-native-unicons/icons/uil-trash';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Input from 'components/Input';
 import { Form } from '@unform/mobile';
-import { Switch } from 'react-native-paper';
+import { Button, Dialog, Paragraph, Portal, Switch } from 'react-native-paper';
 import Option from 'components/Option';
 import CustomButton from 'components/CustomButton';
 import SelectInput from 'components/SelectInput';
 import * as Yup from 'yup';
 import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
-import { createQueue, deleteQueue, updateQueue } from 'store/actions/queueActions';
+import { clearQueueError, createQueue, deleteQueue, updateQueue } from 'store/actions/queueActions';
 import Modal from 'components/Modal';
 import { getTags } from 'store/actions/tagActions';
+import { errors } from 'utils';
 import {
   ActionsContainer,
   Container,
@@ -37,6 +38,8 @@ const QueueForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [queueName, setQueueName] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [error, setError] = useState({});
   const [queueId, setQueueId] = useState('');
   const route = useRoute();
 
@@ -94,14 +97,27 @@ const QueueForm: React.FC = () => {
       } catch (err) {
         const validationErrors = {};
         if (err instanceof Yup.ValidationError) {
-          err.inner.forEach((error) => {
-            Reflect.set(validationErrors, error.path, error.message);
+          err.inner.forEach((errData) => {
+            Reflect.set(validationErrors, errData.path, errData.message);
           });
           formRef.current.setErrors(validationErrors);
         }
       }
     })();
-  }, [route.params, queueId, selectedTag]);
+  }, [route.params, queueId, selectedTag, status]);
+
+  useEffect(() => {
+    setIsLoading(queue.isLoading);
+    if (queue.error) {
+      const selectedError = errors[queue.error];
+      if (selectedError) {
+        setError(errors[queue.error]);
+      } else {
+        setError(errors.unknown_error);
+      }
+      setErrorDialog(true);
+    }
+  }, [queue]);
 
   const handleDeleteQueue = () => {
     dispatch(deleteQueue(queueId));
@@ -115,6 +131,11 @@ const QueueForm: React.FC = () => {
   const handleSelectTag = (item) => {
     setSelectedTag(item);
     setOpenModal(false);
+  };
+
+  const handleCloseErrorDialog = () => {
+    dispatch(clearQueueError());
+    setErrorDialog(false);
   };
 
   return (
@@ -154,6 +175,17 @@ const QueueForm: React.FC = () => {
           <Modal onSelect={handleSelectTag} items={tag.data} title="Tags" onClose={() => setOpenModal(false)} />
         </ModalContainer>
       )}
+      <Portal>
+        <Dialog visible={errorDialog}>
+          <Dialog.Title>{error.title}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{error.message}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleCloseErrorDialog}>Fechar</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </Container>
   );
 };

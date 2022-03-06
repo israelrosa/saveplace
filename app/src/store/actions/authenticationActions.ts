@@ -62,7 +62,10 @@ export const login = (email, password) => {
         const authorizationToken = `${tokenType} ${accessToken}`;
         return dispatch(success({ ...user.data, authorizationToken }));
       })
-      .catch((error) => dispatch(failure(error.toString())));
+      .catch((error: AxiosError) => {
+        const errorMessage = error.response?.data.id || error.message;
+        return dispatch(failure(errorMessage));
+      });
   };
 };
 
@@ -93,4 +96,8 @@ export const logout = () => {
       .then(() => dispatch(success()))
       .catch((error) => dispatch(failure(error.toString())));
   };
+};
+
+export const clearAuthErrors = () => (dispatch) => {
+  dispatch({ type: types.USER_CLEAR_ERRORS });
 };

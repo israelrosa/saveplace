@@ -28,6 +28,7 @@ const authenticationReducer = createReducer(initialState, {
       token: undefined,
     }),
   [types.USER_LOGOUT_FAILURE]: (_, action) => ({ isLoading: false, error: action.error }),
+  [types.USER_CLEAR_ERRORS]: (state) => ({ ...state, error: undefined }),
 });
 
 export default authenticationReducer;

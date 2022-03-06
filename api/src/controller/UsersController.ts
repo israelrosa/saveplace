@@ -1,12 +1,12 @@
 import { instanceToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
-import CreateRefreshToken from 'services/refreshToken/CreateRefreshToken';
-import AuthenticateUserService from 'services/user/AuthenticateUserService';
-import AuthenticateWithRefreshTokenService from 'services/user/AuthenticationWithRefreshTokenService';
-import RegisterUserService from 'services/user/RegisterUserService';
-import RevokeTokenService from 'services/user/RevokeTokenService';
-import ShowUserInfoService from 'services/user/ShowUserInfoService';
-import UpdateUserService from 'services/user/UpdateUserService';
+import AuthenticateUserService from '../services/user/AuthenticateUserService';
+import AuthenticateWithRefreshTokenService from '../services/user/AuthenticationWithRefreshTokenService';
+import RegisterUserService from '../services/user/RegisterUserService';
+import RevokeTokenService from '../services/user/RevokeTokenService';
+import ShowUserInfoService from '../services/user/ShowUserInfoService';
+import UpdateUserService from '../services/user/UpdateUserService';
+import CreateRefreshToken from '../services/refreshToken/CreateRefreshToken';
 
 export default class UsersController {
   async register(request: Request, response: Response): Promise<Response> {

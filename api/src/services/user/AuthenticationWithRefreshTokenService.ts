@@ -1,7 +1,7 @@
 import { EntityManager, getManager } from 'typeorm';
-import ErrorHandler from 'utils/ErrorHandler';
-import RefreshToken from 'models/RefreshToken';
-import User from 'models/User';
+import User from '../../models/User';
+import RefreshToken from '../../models/RefreshToken';
+import ErrorHandler from '../../utils/ErrorHandler';
 import ERROR from '../../utils';
 import authConfig from '../../configs/auth';
 import CreateSessionToken from './CreateSessionToken';

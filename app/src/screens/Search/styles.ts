@@ -4,6 +4,7 @@ import { StatusBar } from 'react-native';
 export const Container = styled.View`
   height: 100%;
   width: 100%;
+  position: relative;
   background-color: ${(props) => props.theme.colors.background.main};
   padding-top: ${StatusBar.currentHeight}px;
 `;
@@ -32,4 +33,11 @@ export const FiltersContainer = styled.ScrollView`
 
 export const Content = styled.ScrollView`
   padding: 24px;
+`;
+
+export const LoadingContent = styled.View`
+  padding: 24px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;

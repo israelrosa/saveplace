@@ -1,7 +1,7 @@
-import RefreshToken from 'models/RefreshToken';
 import { EntityManager, getManager } from 'typeorm';
 import { uid } from 'rand-token';
 import moment from 'moment';
+import RefreshToken from '../../models/RefreshToken';
 import authConfig from '../../configs/auth';
 
 export default class CreateRefreshToken {

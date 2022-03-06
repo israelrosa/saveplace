@@ -1,6 +1,6 @@
 import { EntityManager, getManager } from 'typeorm';
-import ErrorHandler from 'utils/ErrorHandler';
-import RefreshToken from 'models/RefreshToken';
+import ErrorHandler from '../../utils/ErrorHandler';
+import RefreshToken from '../../models/RefreshToken';
 import ERROR from '../../utils';
 
 export default class RevokeTokenService {
@@ -24,7 +24,7 @@ export default class RevokeTokenService {
     }
 
     try {
-      this.entityManager.delete(findedRefreshToken);
+      this.entityManager.delete(RefreshToken, findedRefreshToken);
     } catch (error) {
       throw new ErrorHandler(ERROR.DATABASE_ERROR);
     }

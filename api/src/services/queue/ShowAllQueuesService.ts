@@ -1,5 +1,5 @@
 import { EntityManager, getManager } from 'typeorm';
-import Queue from 'models/Queue';
+import Queue from '../../models/Queue';
 
 interface QueueQueries {
   search?: string;

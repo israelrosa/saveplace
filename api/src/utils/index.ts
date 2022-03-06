@@ -2,7 +2,7 @@ import winston from 'winston';
 
 export default {
   NEXT_CLIENT_DOES_NOT_EXIST: {
-    id: 'NEXT_CLIENT_DOES_NOT_EXIST',
+    id: 'next_client_does_not_exist',
     message: 'The next client is undefined',
     statusCode: 401,
   },
@@ -26,9 +26,9 @@ export default {
     message: 'Invalid resource',
     statusCode: 422,
   },
-  INVALID_PASSWORD: {
-    id: 'invalid_password',
-    message: 'Invalid password',
+  INVALID_CREDENTIALS: {
+    id: 'invalid_credentials',
+    message: 'Invalid credentials',
     statusCode: 422,
   },
   INVALID_USER_TYPE: {
@@ -54,6 +54,11 @@ export default {
   USER_ALREADY_EXITED_OR_ATTENDED: {
     id: 'user_already_exited_or_attended',
     message: 'User has already left or was attended in the queue',
+    statusCode: 401,
+  },
+  USER_ALREADY_EXISTS: {
+    id: 'user_already_exists',
+    message: 'User already exists',
     statusCode: 401,
   },
   USER_DOES_NOT_HAVE_CURRENT_QUEUE: {

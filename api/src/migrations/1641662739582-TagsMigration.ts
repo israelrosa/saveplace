@@ -16,13 +16,7 @@ export default class TagsMigration1641662739582 implements MigrationInterface {
     ];
 
     tags.forEach(async tag => {
-      try {
-        await queryRunner.query(
-          `INSERT INTO "tags" ("name") VALUES ('${tag}')`,
-        );
-      } catch (error) {
-        await this.down();
-      }
+      await queryRunner.query(`INSERT INTO "tags" ("name") VALUES ('${tag}')`);
     });
   }
 

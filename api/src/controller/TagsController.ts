@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import ShowAllTagsService from 'services/tags/ShowAllTagsService';
-import ShowOneTagService from 'services/tags/ShowOneTagService';
+import ShowAllTagsService from '../services/tags/ShowAllTagsService';
+import ShowOneTagService from '../services/tags/ShowOneTagService';
 
 export default class TagsController {
   async get(request: Request, response: Response): Promise<Response> {

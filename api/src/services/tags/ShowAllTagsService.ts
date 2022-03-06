@@ -1,5 +1,5 @@
-import Tag from 'models/Tag';
 import { EntityManager, getManager } from 'typeorm';
+import Tag from '../../models/Tag';
 
 export default class ShowAllTagsService {
   private entityManager: EntityManager;

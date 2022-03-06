@@ -118,7 +118,7 @@ export default class Queue {
 
     const waitingTimeMedia = diff / (FourFirstClients.length - 1);
 
-    return waitingTimeMedia;
+    return waitingTimeMedia || 0;
   }
 
   @Expose({ name: 'lastGeneratedCode' })
@@ -126,7 +126,8 @@ export default class Queue {
     if (!this.clients || this.clients.length === 0) {
       return this.currentCode;
     }
-    const result = this.clients.sort((a, b) => a.code - b.code).pop();
+    const clientsSlice = this.clients.slice();
+    const result = clientsSlice.sort((a, b) => a.code - b.code).pop();
 
     const lastCode = result !== undefined ? result.code : this.currentCode;
 
@@ -135,19 +136,21 @@ export default class Queue {
 
   @Expose({ name: 'nextClient' })
   nextClient() {
-    if (this.currentCode === this.lastGeneratedCode()) {
-      return undefined;
+    const lastCode = this.lastGeneratedCode();
+    if (this.currentCode === lastCode) {
+      return lastCode;
     }
-    const orderedClients = this.clients.sort((a, b) => a.code - b.code);
     let nextClient;
     for (
-      let nextCode = this.currentCode + 1;
-      !nextClient || nextCode <= this.lastGeneratedCode;
+      let nextCode = this.currentCode;
+      !nextClient && nextCode <= lastCode;
       nextCode += 1
     ) {
-      nextClient = orderedClients.find(client => {
+      nextClient = this.clients.find(client => {
         const isNext = client.code === nextCode;
-        const isWaiting = client.status !== QueueClientType.EXITED;
+        const isWaiting =
+          client.status !== QueueClientType.EXITED &&
+          client.status !== QueueClientType.ATTENDED;
 
         if (!isWaiting) {
           return false;

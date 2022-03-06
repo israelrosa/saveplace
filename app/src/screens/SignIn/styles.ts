@@ -4,6 +4,7 @@ import { StatusBar } from 'react-native';
 export const Container = styled.View`
   height: 100%;
   width: 100%;
+  position: relative;
   background-color: ${(props) => props.theme.colors.background.main};
   padding-top: ${StatusBar.currentHeight}px;
   justify-content: flex-end;

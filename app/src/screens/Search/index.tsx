@@ -11,11 +11,13 @@ import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
 import { getTags } from 'store/actions/tagActions';
 import { getQueues } from 'store/actions/queueActions';
 import { useNavigation } from '@react-navigation/native';
-import { Container, Content, FiltersContainer, Header, HeaderText } from './styles';
+import { ActivityIndicator } from 'react-native-paper';
+import { Container, Content, FiltersContainer, Header, HeaderText, LoadingContent } from './styles';
 
 const Search: React.FC = () => {
   // const [location, setLocation] = useState(null);
   const [selectedTag, setSelectedTag] = useState({});
+  const [pageLoad, setPageLoad] = useState(false);
   const [search, setSearch] = useState('');
   const theme = useTheme();
   const TASK_FETCH_LOCATION = 'TASK_FETCH_LOCATION';
@@ -54,8 +56,11 @@ const Search: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => setPageLoad(!pageLoad));
     dispatch(getQueues({ search, tagId: selectedTag.id, skip: 0, limit: 0 }));
-  }, [search, selectedTag]);
+
+    return unsubscribe;
+  }, [pageLoad, search, selectedTag]);
 
   useEffect(() => {
     dispatch(getTags());
@@ -73,14 +78,19 @@ const Search: React.FC = () => {
         {tag && tag.data?.map((tagData) => (
           <ChipTag
             onSelect={() => setSelectedTag(tagData)}
-            key={tagData.name}
+            key={tagData.id}
             text={tagData.name}
             selected={selectedTag.id === tagData.id}
           />
         ))}
       </FiltersContainer>
-      <Content>
-        {queue && queue.publicQueues?.items?.map(publicQueue => (
+      {queue.isLoading && (
+        <LoadingContent>
+          <ActivityIndicator animating />
+        </LoadingContent>
+      )}
+      {queue && !queue.isLoading && queue.publicQueues?.items?.map(publicQueue => (
+        <Content>
           <QueueCard
             key={publicQueue.id}
             style={{ marginBottom: 12 }}
@@ -91,8 +101,8 @@ const Search: React.FC = () => {
             waitingTimeMinutes={publicQueue.waitingTimeMinutes || 0}
             image="http://www.stevnserhvervsraad.dk/wp-content/uploads/blank-avatar.png"
           />
-        ))}
-      </Content>
+        </Content>
+      ))}
     </Container>
   );
 };

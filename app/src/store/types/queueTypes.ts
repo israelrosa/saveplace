@@ -41,6 +41,8 @@ export const types: { [id: string]: string } = {
   QUIT_QUEUE_REQUEST: 'QUIT_QUEUE_REQUEST',
   QUIT_QUEUE_SUCCESS: 'QUIT_QUEUE_SUCCESS',
   QUIT_QUEUE_FAILURE: 'QUIT_QUEUE_FAILURE',
+
+  CLEAR_QUEUE_ERROR: 'CLEAR_QUEUE_ERROR',
 };
 
 interface Queue {

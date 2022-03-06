@@ -1,8 +1,8 @@
 import { EntityManager, getManager } from 'typeorm';
-import Queue from 'models/Queue';
-import QueueClient, { QueueClientType } from 'models/QueueClient';
-import ErrorHandler from 'utils/ErrorHandler';
-import ERROR, { log } from 'utils';
+import Queue from '../../models/Queue';
+import QueueClient, { QueueClientType } from '../../models/QueueClient';
+import ErrorHandler from '../../utils/ErrorHandler';
+import ERROR, { log } from '../../utils';
 
 interface QueueClientParams {
   userId: string;

@@ -12,6 +12,8 @@ export const types: { [id: string]: string } = {
   USER_REGISTER_REQUEST: 'USER_REGISTER_REQUEST',
   USER_REGISTER_SUCCESS: 'USER_REGISTER_SUCCESS',
   USER_REGISTER_FAILURE: 'USER_REGISTER_FAILURE',
+
+  USER_CLEAR_ERRORS: 'USER_CLEAR_ERRORS',
 };
 interface Token {
   accessToken: string;

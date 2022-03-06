@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-import ERROR, { log } from 'utils';
+import ERROR, { log } from '../utils';
 import authConfig from '../configs/auth';
 import ErrorHandler from '../utils/ErrorHandler';
 

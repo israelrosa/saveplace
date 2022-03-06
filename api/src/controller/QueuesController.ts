@@ -1,13 +1,13 @@
 import { instanceToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
-import CallNextService from 'services/queue/CallNextService';
-import CreateQueueService from 'services/queue/CreateQueueService';
-import DeleteQueueService from 'services/queue/DeleteQueueService';
-import ShowAllQueuesService from 'services/queue/ShowAllQueuesService';
-import ShowAllUserQueuesService from 'services/queue/ShowAllUserQueuesService';
-import ShowQueueClientsService from 'services/queue/ShowQueueClientsService';
-import ShowQueueService from 'services/queue/ShowQueueService';
-import UpdateQueueService from 'services/queue/UpdateQueueService';
+import CallNextService from '../services/queue/CallNextService';
+import CreateQueueService from '../services/queue/CreateQueueService';
+import DeleteQueueService from '../services/queue/DeleteQueueService';
+import ShowAllQueuesService from '../services/queue/ShowAllQueuesService';
+import ShowAllUserQueuesService from '../services/queue/ShowAllUserQueuesService';
+import ShowQueueClientsService from '../services/queue/ShowQueueClientsService';
+import ShowQueueService from '../services/queue/ShowQueueService';
+import UpdateQueueService from '../services/queue/UpdateQueueService';
 
 export default class QueuesController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -96,8 +96,13 @@ export default class QueuesController {
     const { id } = request.user;
     const { status } = request.query;
 
+    let statusParsed;
+    if (status) {
+      statusParsed = String(status);
+    }
+
     const showAllUserQueuesService = new ShowAllUserQueuesService();
-    const queues = await showAllUserQueuesService.exec(id, status);
+    const queues = await showAllUserQueuesService.exec(id, statusParsed);
 
     return response.status(200).json(instanceToPlain(queues));
   }

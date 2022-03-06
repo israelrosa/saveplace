@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from 'components/CustomButton';
-import { Keyboard, TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity, View, StatusBar as SB } from 'react-native';
 import SignInImage from 'assets/SignInImage';
 import { useTheme } from 'styled-components';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import { useAppDispatch, useAppSelector } from 'hooks/storeHook';
-import { login } from 'store/actions/authenticationActions';
+import { clearAuthErrors, login } from 'store/actions/authenticationActions';
 import { useNavigation } from '@react-navigation/native';
+import { Button, Dialog, Paragraph, Portal, ProgressBar } from 'react-native-paper';
+import { errors } from 'utils';
 import {
   ActionsContainer,
   Container,
@@ -24,10 +26,12 @@ import Input from '../../components/Input';
 const SignIn: React.FC = () => {
   const theme = useTheme();
   const formRef = useRef(null);
-  const navigator = useNavigation();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { auth } = useAppSelector((state) => state);
-  const [isLoading, setIsLoading] = useState(false);
+  const [pageLoad, setPageLoad] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [error, setError] = useState({});
   const [keyboardIsOpen, setKeyboardIsOpen] = React.useState(false);
 
   useEffect(() => {
@@ -37,15 +41,27 @@ const SignIn: React.FC = () => {
     Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardIsOpen(false);
     });
+
+    const unsubscribe = navigation.addListener('focus', () => setPageLoad(!pageLoad));
+
     return () => {
       Keyboard.removeAllListeners('keyboardDidShow');
       Keyboard.removeAllListeners('keyboardDidHide');
+      unsubscribe();
     };
-  }, [Keyboard]);
+  }, [pageLoad]);
 
   useEffect(() => {
-    setIsLoading(auth?.isLoading);
-  }, [auth, isLoading]);
+    if (auth.error) {
+      const selectedError = errors[auth.error];
+      if (selectedError) {
+        setError(errors[auth.error]);
+      } else {
+        setError(errors.unknown_error);
+      }
+      setErrorDialog(true);
+    }
+  }, [auth]);
 
   const handleSubmit = async (data) => {
     try {
@@ -66,16 +82,24 @@ const SignIn: React.FC = () => {
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
-        err.inner.forEach((error) => {
-          Reflect.set(validationErrors, error.path, error.message);
+        err.inner.forEach((errData) => {
+          Reflect.set(validationErrors, errData.path, errData.message);
         });
         formRef.current.setErrors(validationErrors);
       }
     }
   };
 
+  const handleCloseErrorDialog = () => {
+    dispatch(clearAuthErrors());
+    setErrorDialog(false);
+  };
+
   return (
     <Container>
+      <View style={{ position: 'absolute', width: '100%', top: SB.currentHeight }}>
+        <ProgressBar indeterminate visible={auth.isLoading} />
+      </View>
       <StatusBar style="auto" />
       {!keyboardIsOpen && (
         <HeaderImage>
@@ -91,19 +115,30 @@ const SignIn: React.FC = () => {
         </InputsContainer>
         <ActionsContainer>
           <CustomButton
-            isLoading={isLoading}
+            isLoading={auth.isLoading}
             color={theme.colors.primary}
             text="Entrar"
             onPress={() => formRef.current.submitForm()}
           />
           <RegisterAction>
             <RegisterText>Não possui uma conta?</RegisterText>
-            <TouchableOpacity onPress={() => navigator.navigate('SignOn')}>
+            <TouchableOpacity onPress={() => navigation.navigate('SignOn')}>
               <TextButton>Cadastrar-se</TextButton>
             </TouchableOpacity>
           </RegisterAction>
         </ActionsContainer>
       </Form>
+      <Portal>
+        <Dialog visible={errorDialog}>
+          <Dialog.Title>{error.title}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{error.message}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleCloseErrorDialog}>Fechar</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </Container>
   );
 };

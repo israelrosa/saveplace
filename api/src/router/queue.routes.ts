@@ -1,6 +1,6 @@
-import QueuesController from 'controller/QueuesController';
 import { Router } from 'express';
-import ensureAuthentication from 'middlewares/ensureAuthentication';
+import ensureAuthentication from '../middlewares/ensureAuthentication';
+import QueuesController from '../controller/QueuesController';
 import { UserType } from '../models/User';
 
 const queuesRouter = Router();
